@@ -1,0 +1,47 @@
+{
+  "name": "wayfarer-api",
+  "version": "1.0.0",
+  "description": "WayFarer is a public bus transportation booking server.",
+  "main": "index.js",
+  "dependencies": {
+    "@babel/runtime": "^7.4.5",
+    "cors": "^2.8.5",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "joi": "^14.3.1",
+    "morgan": "^1.9.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "eslint": "^6.0.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.18.0",
+    "mocha": "^6.1.4",
+    "nodemon": "^1.19.1"
+  },
+  "engines": {
+    "node": "10.7.x",
+    "npm": "6.1.x"
+  },
+  "scripts": {
+    "lint": "eslint",
+    "start": "babel-node src/server/index.js",
+    "dev": "nodemon --exec babel-node src/server/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/okabamac/wayfarer-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/okabamac/wayfarer-api/issues"
+  },
+  "homepage": "https://github.com/okabamac/wayfarer-api#readme"
+}
