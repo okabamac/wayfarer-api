@@ -9,5 +9,8 @@ install:
 env:
   global:
     - NODE_ENV=test
-after_success:
+after_script:
   - npm run coverage
+  
+notification:
+  false
