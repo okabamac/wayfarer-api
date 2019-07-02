@@ -17,7 +17,7 @@ app.use(
 );
 app.use('/api/v1/users', userRoute);
 app.use('*', (req, res) => {
- return res.status(404).json({
+  res.status(404).json({
     status: 404,
     error: "Sorry, we couldn't find that!",
   });
