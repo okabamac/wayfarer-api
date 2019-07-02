@@ -5,6 +5,8 @@
   "main": "index.js",
   "dependencies": {
     "@babel/runtime": "^7.4.5",
+    "@hapi/joi": "^15.1.0",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
@@ -31,7 +33,7 @@
     "npm": "6.1.x"
   },
   "scripts": {
-    "lint": "eslint",
+    "lint": "eslint src/ --fix",
     "start": "babel-node src/server/index.js",
     "dev": "nodemon --exec babel-node src/server/index.js",
     "test": "nyc --require @babel/register ---reporter=html --reporter=text mocha src/test/**.test.js --timeout 20000 --exit",
