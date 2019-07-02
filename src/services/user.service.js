@@ -26,7 +26,6 @@ class Userservice {
         is_admin,
         password,
       };
-      console.log(password);
       await User.push(newUser);
       return {
         user_id: newUser.user_id,
@@ -35,6 +34,38 @@ class Userservice {
         is_admin,
         email,
       };
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  /** Signs user into account
+   * @description signs user into their account
+   * @body {object} a new user object
+   */
+
+  static async login(req) {
+    try {
+      const foundUser = await User.filter(user => user.email === req.email)[0];
+      if (foundUser) {
+        const bycrptResponse = GeneralUtils.validate(
+          req.password,
+          foundUser.password,
+        );
+        if (bycrptResponse) {
+          const {
+            user_id, first_name, last_name, is_admin, email,
+          } = foundUser;
+          return {
+            user_id,
+            first_name,
+            last_name,
+            email,
+            admin: is_admin,
+          };
+        }
+      }
+      throw new Error('Invalid credentials');
     } catch (err) {
       throw err;
     }

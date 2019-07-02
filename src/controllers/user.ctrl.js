@@ -19,7 +19,22 @@ class UserController {
           res,
           200,
           user,
-          'User successfully added',
+        );
+      }
+      return response.sendError(res, 500, 'Something went wrong');
+    } catch (err) {
+      return response.sendError(res, 400, err.message);
+    }
+  }
+
+  static async login(req, res) {
+    try {
+      const user = await UserService.login(req.body);
+      if (user) {
+        return response.sendSuccess(
+          res,
+          200,
+          user,
         );
       }
       return response.sendError(res, 500, 'Something went wrong');
