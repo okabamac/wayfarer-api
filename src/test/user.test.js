@@ -106,6 +106,52 @@ describe('Test user signup and login', () => {
           done();
         });
     });
+    it('it should throw error because of wrong email type', (done) => {
+      const badRequest = {
+        email: 'macc77',
+        first_name: 'Mac',
+        last_name: 'Okaba',
+        password: 'password',
+        confirm_password: 'password',
+        is_admin: false,
+      };
+      chai
+        .request(app)
+        .post('/api/v1/users/auth/signup')
+        .send(badRequest)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('error')
+            .eql('email must be a valid email');
+          done();
+        });
+    });
+    it('it should throw error because of short password', (done) => {
+      const badRequest = {
+        email: 'macokab@gmail.com',
+        first_name: 'Mac',
+        last_name: 'Okaba',
+        password: 'pass',
+        confirm_password: 'pass',
+        is_admin: false,
+      };
+      chai
+        .request(app)
+        .post('/api/v1/users/auth/signup')
+        .send(badRequest)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('error')
+            .eql(
+              'password length must be at least 7 characters long',
+            );
+          done();
+        });
+    });
     it('it should throw error because of missing password', (done) => {
       const badRequest = {
         first_name: 'Mac',
@@ -143,6 +189,63 @@ describe('Test user signup and login', () => {
           res.body.should.have
             .property('error')
             .eql('Your password and confirm password do not match');
+          done();
+        });
+    });
+    it('it should signin a user', (done) => {
+      const payload = {
+        password: 'password',
+        email: 'okabamac@gmail.com',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/users/auth/signin')
+        .send(payload)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.data.should.have
+            .property('user_id');
+          res.body.data.should.have
+            .property('first_name');
+          res.body.data.should.have
+            .property('last_name');
+          done();
+        });
+    });
+    it('it should throw error because of wrong email', (done) => {
+      const payload = {
+        password: 'password',
+        email: 'okabamac1.56998@gmail.com',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/users/auth/signin')
+        .send(payload)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('error')
+            .eql('Invalid credentials');
+          done();
+        });
+    });
+    it('it should throw error because of wrong password', (done) => {
+      const payload = {
+        password: 'password123333333',
+        email: 'okabamac@gmail.com',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/users/auth/signin')
+        .send(payload)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('error')
+            .eql('Invalid credentials');
           done();
         });
     });
