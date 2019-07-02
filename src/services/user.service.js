@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import User from '../models/user.model';
 import GeneralUtils from '../utils/general.utilities';
+import Auth from '../middlewares/auth';
 
 class Userservice {
   /** Add user to the db
@@ -26,8 +27,10 @@ class Userservice {
         is_admin,
         password,
       };
+      const token = await Auth.signJwt({ user_id: newUser.user_id, is_admin });
       await User.push(newUser);
       return {
+        token,
         user_id: newUser.user_id,
         first_name,
         last_name,
@@ -56,7 +59,12 @@ class Userservice {
           const {
             user_id, first_name, last_name, is_admin, email,
           } = foundUser;
+          const token = await Auth.signJwt({
+            user_id,
+            is_admin,
+          });
           return {
+            token,
             user_id,
             first_name,
             last_name,

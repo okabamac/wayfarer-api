@@ -19,6 +19,23 @@ const newUser = {
 
 describe('Test user signup and login', () => {
   /**
+   * Test for 404
+   */
+  describe('GET/POST for unavailable routes', () => {
+    it('it should return 404 for unavailable routes', (done) => {
+      chai
+        .request(app)
+        .get('/')
+        .send(newUser)
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error').eql('Sorry, we couldn\'t find that!');
+          done();
+        });
+    });
+  });
+  /**
    * Test the POST /auth/signup endpoint
    */
   describe('POST /auth/signup', () => {
@@ -33,6 +50,7 @@ describe('Test user signup and login', () => {
           res.body.data.should.have.property('user_id');
           res.body.data.should.have.property('first_name');
           res.body.data.should.have.property('last_name');
+          res.body.data.should.have.property('token');
           res.body.data.should.have.property('is_admin').eql(false);
           done();
         });
@@ -210,6 +228,8 @@ describe('Test user signup and login', () => {
             .property('first_name');
           res.body.data.should.have
             .property('last_name');
+          res.body.data.should.have
+            .property('token');
           done();
         });
     });
