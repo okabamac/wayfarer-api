@@ -10,13 +10,14 @@ chai.should();
 
 const newUser = {
   email: 'okabamac@gmail.com',
-  firs_name: 'Mac',
+  first_name: 'Mac',
   last_name: 'Okaba',
   password: 'password',
   confirm_password: 'password',
+  is_admin: false,
 };
 
-describe('Test user login and signup', () => {
+describe('Test user signup and login', () => {
   /**
    * Test the POST /auth/signup endpoint
    */
@@ -24,15 +25,124 @@ describe('Test user login and signup', () => {
     it('it should create a new user', (done) => {
       chai
         .request(app)
-        .post('/api/v1/auth/signup')
+        .post('/api/v1/users/auth/signup')
         .send(newUser)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.data.should.have.property('token');
+          res.body.data.should.have.property('user_id');
           res.body.data.should.have.property('first_name');
           res.body.data.should.have.property('last_name');
-          res.body.data.should.have.property('is_admin').eql('false');
+          res.body.data.should.have.property('is_admin').eql(false);
+          done();
+        });
+    });
+    it('it should throw error because email is already taken', (done) => {
+      chai
+        .request(app)
+        .post('/api/v1/users/auth/signup')
+        .send(newUser)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error').eql('Email is already in use');
+          done();
+        });
+    });
+    it('it should throw error because of missing first name', (done) => {
+      const badRequest = {
+        email: 'okabamac@gmail.com',
+        last_name: 'Okaba',
+        password: 'password',
+        confirm_password: 'password',
+        is_admin: false,
+      };
+      chai
+        .request(app)
+        .post('/api/v1/users/auth/signup')
+        .send(badRequest)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error').eql('first_name is required');
+          done();
+        });
+    });
+    it('it should throw error because of missing last name', (done) => {
+      const badRequest = {
+        email: 'okabamac@gmail.com',
+        first_name: 'Okaba',
+        password: 'password',
+        confirm_password: 'password',
+        is_admin: false,
+      };
+      chai
+        .request(app)
+        .post('/api/v1/users/auth/signup')
+        .send(badRequest)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error').eql('last_name is required');
+          done();
+        });
+    });
+    it('it should throw error because of missing email', (done) => {
+      const badRequest = {
+        first_name: 'Mac',
+        last_name: 'Okaba',
+        password: 'password',
+        confirm_password: 'password',
+        is_admin: false,
+      };
+      chai
+        .request(app)
+        .post('/api/v1/users/auth/signup')
+        .send(badRequest)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error').eql('email is required');
+          done();
+        });
+    });
+    it('it should throw error because of missing password', (done) => {
+      const badRequest = {
+        first_name: 'Mac',
+        last_name: 'Okaba',
+        confirm_password: 'password',
+        is_admin: false,
+      };
+      chai
+        .request(app)
+        .post('/api/v1/users/auth/signup')
+        .send(badRequest)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('error')
+            .eql('Your password and confirm password do not match');
+          done();
+        });
+    });
+    it('it should throw error because of missing confirm password', (done) => {
+      const badRequest = {
+        first_name: 'Mac',
+        last_name: 'Okaba',
+        password: 'password',
+        is_admin: false,
+      };
+      chai
+        .request(app)
+        .post('/api/v1/users/auth/signup')
+        .send(badRequest)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('error')
+            .eql('Your password and confirm password do not match');
           done();
         });
     });

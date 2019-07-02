@@ -1,0 +1,44 @@
+/* eslint-disable camelcase */
+import User from '../models/user.model';
+import GeneralUtils from '../utils/general.utilities';
+
+class Userservice {
+  /** Add user to the db
+   * @description Operate on a user and his account
+   * @body {object} a new user object
+   */
+
+  static async addUser(req) {
+    try {
+      const foundUser = await User.filter(user => user.email === req.email)[0];
+      if (foundUser) {
+        throw new Error('Email is already in use');
+      }
+      const {
+        first_name, last_name, is_admin, email,
+      } = req;
+      const password = await GeneralUtils.hash(req.password);
+      const newUser = {
+        user_id: User.length + 1,
+        first_name,
+        last_name,
+        email,
+        is_admin,
+        password,
+      };
+      console.log(password);
+      await User.push(newUser);
+      return {
+        user_id: newUser.user_id,
+        first_name,
+        last_name,
+        is_admin,
+        email,
+      };
+    } catch (err) {
+      throw err;
+    }
+  }
+}
+
+export default Userservice;
