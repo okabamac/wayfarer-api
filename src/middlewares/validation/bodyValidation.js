@@ -30,7 +30,6 @@ const bodyValidation = (req, res, next) => {
               ? err.details[0].message.replace(/['"]/g, '')
               : err.message,
           };
-
           // Send back the JSON error response
           return res.status(400).json(SimplifiedError);
         }

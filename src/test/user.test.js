@@ -165,7 +165,7 @@ describe('Test user signup and login', () => {
           res.body.should.have
             .property('error')
             .eql(
-              'password length must be at least 7 characters long',
+              'password length must be at least 6 characters long',
             );
           done();
         });

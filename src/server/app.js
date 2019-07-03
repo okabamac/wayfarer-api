@@ -2,6 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import userRoute from '../routes/user.route';
+import tripRoute from '../routes/trip.route';
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(
   }),
 );
 app.use('/api/v1/users', userRoute);
+app.use('/api/v1/trips', tripRoute);
 app.use('*', (req, res) => {
   res.status(404).json({
     status: 404,
