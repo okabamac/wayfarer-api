@@ -1,14 +1,23 @@
+sudo: false
+
 language: node_js
+
 node_js:
   - "stable"
+
 cache:
   directories:
     - "node_modules"
+
+services:
+  - postgresql
+
 install:
   - npm install
-env:
-  global:
-    - NODE_ENV=test
+
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+  
 after_script:
   - npm run coverage
   
