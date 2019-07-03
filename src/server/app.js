@@ -5,7 +5,7 @@ import userRoute from '../routes/user.route';
 import tripRoute from '../routes/trip.route';
 
 const app = express();
-
+const API_VERSION = '/api/v1';
 app.use(morgan('dev'));
 
 app.use(cors());
@@ -16,8 +16,8 @@ app.use(
     extended: false,
   }),
 );
-app.use('/api/v1/users', userRoute);
-app.use('/api/v1/trips', tripRoute);
+app.use(`${API_VERSION}/users`, userRoute);
+app.use(`${API_VERSION}/trips`, tripRoute);
 app.use('*', (req, res) => {
   res.status(404).json({
     status: 404,
