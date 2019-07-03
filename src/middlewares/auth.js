@@ -71,19 +71,8 @@ class Authentication {
       result.message = 'Please make sure your request has an authorization header';
       return result;
     }
-    let token = req.headers.authorization;
-    let type;
-    if (token.startsWith('Bearer ')) {
-      // Remove Bearer from string
-      token = token.slice(7, token.length);
-    }
-    const tokenType = req.headers.authorization.split(' ');
-    if (tokenType[0] === 'Bearer' || tokenType[1] === undefined) {
-      type = 'Bearer';
-    } else {
-      const [theType] = tokenType;
-      type = theType;
-    }
+    const token = req.headers.authorization.split(' ')[1];
+    const type = req.headers.authorization.split(' ')[0];
     let payload;
     switch (type) {
       case 'Bearer':

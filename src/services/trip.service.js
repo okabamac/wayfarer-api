@@ -11,12 +11,16 @@ class Tripservice {
   static async addTrip(req) {
     try {
       const {
-        trip_date, bus_id, origin, destination, fare,
+        bus_id,
+        origin,
+        destination,
+        trip_date,
+        fare,
       } = req.body;
       const foundTrip = await Trip.filter(trip => trip.bus_id === bus_id
         && trip.origin === origin
         && trip.destination === destination
-        && trip.trip_date === trip_date)[0];
+        && trip.trip_date.getTime() === trip_date.getTime())[0];
       if (foundTrip) {
         throw new Error('This bus is already scheduled for the same trip');
       }
@@ -39,6 +43,14 @@ class Tripservice {
         trip_date,
         created_by: req.user_id,
       };
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getAllTrips(req) {
+    try {
+      return Trip;
     } catch (err) {
       throw err;
     }

@@ -28,7 +28,9 @@ const createUserSchema = Joi.object({
     .required()
     .strict()
     .error(new Error('Your password and confirm password do not match')),
-  is_admin: Joi.boolean().required(),
+  is_admin: Joi.boolean().default(false, {
+    invalid: true,
+  }),
 });
 const signinUserSchema = Joi.object({
   email,

@@ -7,14 +7,15 @@ import app from '../server/app';
 chai.use(chaiHttp);
 chai.should();
 
-let theToken;
+let adminToken;
+let userToken;
 
 describe('Test for trips creation and get', () => {
   /**
    * Test for trips
    */
   describe('Test for trips', () => {
-    it('it should sign in the user and return a token', (done) => {
+    it('it should sign in the admin user and return a token', (done) => {
       const user = {
         email: 'markokaba99@gmail.com',
         password: 'johnbaby',
@@ -29,7 +30,26 @@ describe('Test for trips creation and get', () => {
           res.body.data.should.have.property('token');
           const { token } = res.body.data;
 
-          theToken = token;
+          adminToken = token;
+          done();
+        });
+    });
+    it('it should sign in the normal user and return a token', (done) => {
+      const user = {
+        email: 'jj06@gmail.com',
+        password: 'johnbaby',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/users/auth/signin')
+        .send(user)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.data.should.have.property('token');
+          const { token } = res.body.data;
+
+          userToken = token;
           done();
         });
     });
@@ -44,7 +64,7 @@ describe('Test for trips creation and get', () => {
       chai
         .request(app)
         .post('/api/v1/trips/create')
-        .set('Authorization', theToken)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(newTrip)
         .end((err, res) => {
           res.should.have.status(200);
@@ -60,6 +80,26 @@ describe('Test for trips creation and get', () => {
           done();
         });
     });
+    it('it should not create a new trip because of administrative rights', (done) => {
+      const newTrip = {
+        bus_id: '1235',
+        origin: 'Ogun',
+        destination: 'Oyo',
+        trip_date: '12-06-2019',
+        fare: '12.666',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/trips/create')
+        .set('Authorization', `Bearer ${userToken}`)
+        .send(newTrip)
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error').eql('Authorized for only admins');
+          done();
+        });
+    });
     it('it should throw an error because of duplicate trip', (done) => {
       const newTrip = {
         bus_id: '1235',
@@ -71,7 +111,7 @@ describe('Test for trips creation and get', () => {
       chai
         .request(app)
         .post('/api/v1/trips/create')
-        .set('Authorization', theToken)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(newTrip)
         .end((err, res) => {
           res.should.have.status(400);
@@ -92,7 +132,7 @@ describe('Test for trips creation and get', () => {
       chai
         .request(app)
         .post('/api/v1/trips/create')
-        .set('Authorization', theToken)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(newTrip)
         .end((err, res) => {
           res.should.have.status(400);
@@ -113,7 +153,7 @@ describe('Test for trips creation and get', () => {
       chai
         .request(app)
         .post('/api/v1/trips/create')
-        .set('Authorization', theToken)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(newTrip)
         .end((err, res) => {
           res.should.have.status(400);
@@ -134,7 +174,7 @@ describe('Test for trips creation and get', () => {
       chai
         .request(app)
         .post('/api/v1/trips/create')
-        .set('Authorization', theToken)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(newTrip)
         .end((err, res) => {
           res.should.have.status(400);
@@ -155,7 +195,7 @@ describe('Test for trips creation and get', () => {
       chai
         .request(app)
         .post('/api/v1/trips/create')
-        .set('Authorization', theToken)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(newTrip)
         .end((err, res) => {
           res.should.have.status(400);
@@ -177,7 +217,7 @@ describe('Test for trips creation and get', () => {
       chai
         .request(app)
         .post('/api/v1/trips/create')
-        .set('Authorization', theToken)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(newTrip)
         .end((err, res) => {
           res.should.have.status(400);
@@ -198,14 +238,12 @@ describe('Test for trips creation and get', () => {
       chai
         .request(app)
         .post('/api/v1/trips/create')
-        .set('Authorization', theToken)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(newTrip)
         .end((err, res) => {
           res.should.have.status(400);
           res.body.should.be.a('object');
-          res.body.should.have
-            .property('error')
-            .eql('fare is required');
+          res.body.should.have.property('error').eql('fare is required');
           done();
         });
     });
@@ -220,7 +258,7 @@ describe('Test for trips creation and get', () => {
       chai
         .request(app)
         .post('/api/v1/trips/create')
-        .set('Authorization', theToken)
+        .set('Authorization', `Bearer ${adminToken}`)
         .send(newTrip)
         .end((err, res) => {
           res.should.have.status(400);
@@ -228,6 +266,32 @@ describe('Test for trips creation and get', () => {
           res.body.should.have
             .property('error')
             .eql('fare must be a number');
+          done();
+        });
+    });
+    it('it should get all trips as requested by admin', (done) => {
+      chai
+        .request(app)
+        .get('/api/v1/trips/')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('data');
+          done();
+        });
+    });
+    it('it should get all trips as requested by normal user', (done) => {
+      chai
+        .request(app)
+        .get('/api/v1/trips/')
+        .set('Authorization', `Bearer ${userToken}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('data');
           done();
         });
     });

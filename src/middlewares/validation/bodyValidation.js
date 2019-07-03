@@ -34,6 +34,7 @@ const bodyValidation = (req, res, next) => {
           return res.status(400).json(SimplifiedError);
         }
         // Replace req.body with the data after Joi validation
+        req.body = data;
         return next();
       });
     }

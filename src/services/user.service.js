@@ -11,14 +11,14 @@ class Userservice {
 
   static async addUser(req) {
     try {
-      const foundUser = await User.filter(user => user.email === req.email)[0];
+      const foundUser = await User.filter(user => user.email === req.body.email)[0];
       if (foundUser) {
         throw new Error('Email is already in use');
       }
       const {
         first_name, last_name, is_admin, email,
-      } = req;
-      const password = await GeneralUtils.hash(req.password);
+      } = req.body;
+      const password = await GeneralUtils.hash(req.body.password);
       const newUser = {
         user_id: User.length + 1,
         first_name,
