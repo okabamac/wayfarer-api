@@ -8,6 +8,7 @@ import bodyValidation from '../middlewares/validation/bodyValidation';
 const router = Router();
 
 router
-  .post('/create', [auth.authenticate, auth.isAdmin, bodyValidation], tripCtrl.addTrip);
+  .post('/create', [auth.authenticate, auth.isAdmin, bodyValidation], tripCtrl.addTrip)
+  .get('/', [auth.authenticate], tripCtrl.getAll);
 
 export default router;

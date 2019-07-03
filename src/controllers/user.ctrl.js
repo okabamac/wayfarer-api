@@ -13,7 +13,7 @@ class UserController {
 
   static async add(req, res) {
     try {
-      const user = await UserService.addUser(req.body);
+      const user = await UserService.addUser(req);
       if (user) {
         return response.sendSuccess(
           res,

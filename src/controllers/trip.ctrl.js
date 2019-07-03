@@ -22,6 +22,18 @@ class TripController {
       return response.sendError(res, 400, err.message);
     }
   }
+
+  static async getAll(req, res) {
+    try {
+      const trip = await TripService.getAllTrips(req);
+      if (trip) {
+        return response.sendSuccess(res, 200, trip);
+      }
+      return response.sendError(res, 500, 'Something went wrong');
+    } catch (err) {
+      return response.sendError(res, 400, err.message);
+    }
+  }
 }
 
 export default TripController;
