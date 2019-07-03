@@ -20,13 +20,13 @@ class Authentication {
     if (payload.status && payload.status !== 200) {
       return response.sendError(res, payload.status, payload.message);
     }
-    req.id = payload.id;
-    req.admin = payload.admin;
+    req.user_id = payload.user_id;
+    req.is_admin = payload.is_admin;
     return next();
   }
 
   static async isAdmin(req, res, next) {
-    if (req.admin !== true) {
+    if (req.is_admin !== true) {
       return response.sendError(res, 401, 'Authorized for only admins');
     }
     return next();
@@ -54,7 +54,7 @@ class Authentication {
     try {
       payload = jwt.decode(token, keys.secret);
     } catch (err) {
-      // handle error
+      throw err;
     }
     return payload;
   }
@@ -71,9 +71,19 @@ class Authentication {
       result.message = 'Please make sure your request has an authorization header';
       return result;
     }
-
-    const token = req.headers.authorization.split(' ')[1];
-    const type = req.headers.authorization.split(' ')[0];
+    let token = req.headers.authorization;
+    let type;
+    if (token.startsWith('Bearer ')) {
+      // Remove Bearer from string
+      token = token.slice(7, token.length);
+    }
+    const tokenType = req.headers.authorization.split(' ');
+    if (tokenType[0] === 'Bearer' || tokenType[1] === undefined) {
+      type = 'Bearer';
+    } else {
+      const [theType] = tokenType;
+      type = theType;
+    }
     let payload;
     switch (type) {
       case 'Bearer':
@@ -81,7 +91,7 @@ class Authentication {
         break;
       default:
         result.status = 401;
-        result.message = 'Invalid token type. Must be type Bearer or Basic';
+        result.message = 'Invalid token type. Must be type Bearer';
         return result;
     }
     if (!payload) {

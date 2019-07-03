@@ -6,7 +6,7 @@ import Auth from '../middlewares/auth';
 class Userservice {
   /** Add user to the db
    * @description Operate on a user and his account
-   * @body {object} a new user object
+   * @param {object} a new user object
    */
 
   static async addUser(req) {
