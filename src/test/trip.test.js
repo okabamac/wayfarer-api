@@ -2,13 +2,16 @@ import chai from 'chai';
 
 import chaiHttp from 'chai-http';
 
-import app from '../server/app';
+import app from '../../app';
 
 chai.use(chaiHttp);
 chai.should();
 
 let adminToken;
 let userToken;
+const expiredToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYWNva2FiYTk5QGdtYWlsLmNvbSIsImFkbWluIjp0cnVlLCJpYXQiOjE1NjEzNzcwNzksImV4cCI6MTU2MTQ2MzQ3OX0.V3pac02NZLFvqTxT8xyLBLxdxlrpkb-V93VGWI671sM';
+const invalidToken = 'UzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJtYWNva2FiYTk5QGdtYWlsLmNvbSIsImFkbWluIjp0cnVlLCJpYXQiOjE1NjEzNzcwNzksImV4cCI6MTU2MTQ2MzQ3OX0.V3pac02NZLFvqTxT8xyLBLxdxlrpkb-V93VGWI671sM';
+
 
 describe('Test for trips creation and get', () => {
   /**
@@ -76,6 +79,7 @@ describe('Test for trips creation and get', () => {
           res.body.data.should.have.property('origin');
           res.body.data.should.have.property('origin');
           res.body.data.should.have.property('destination');
+          res.body.data.should.have.property('status');
           res.body.data.should.have.property('created_by');
           done();
         });
@@ -97,6 +101,85 @@ describe('Test for trips creation and get', () => {
           res.should.have.status(401);
           res.body.should.be.a('object');
           res.body.should.have.property('error').eql('Authorized for only admins');
+          done();
+        });
+    });
+    it('it should not create a new trip because of expired token', (done) => {
+      const newTrip = {
+        bus_id: '1235',
+        origin: 'Ogun',
+        destination: 'Oyo',
+        trip_date: '12-06-2019',
+        fare: '12.666',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/trips/create')
+        .set('Authorization', `Bearer ${expiredToken}`)
+        .send(newTrip)
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error').eql('Token has expired');
+          done();
+        });
+    });
+    it('it should not create a new trip because of invalid token', (done) => {
+      const newTrip = {
+        bus_id: '1235',
+        origin: 'Ogun',
+        destination: 'Oyo',
+        trip_date: '12-06-2019',
+        fare: '12.666',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/trips/create')
+        .set('Authorization', `Bearer ${invalidToken}`)
+        .send(newTrip)
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error').eql('Authorization Denied.');
+          done();
+        });
+    });
+    it('it should not create a new trip because no token is supplied', (done) => {
+      const newTrip = {
+        bus_id: '1235',
+        origin: 'Ogun',
+        destination: 'Oyo',
+        trip_date: '12-06-2019',
+        fare: '12.666',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/trips/create')
+        .send(newTrip)
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error').eql('Please make sure your request has an authorization header');
+          done();
+        });
+    });
+    it('it should not create a new trip because no token type is not Bearer', (done) => {
+      const newTrip = {
+        bus_id: '1235',
+        origin: 'Ogun',
+        destination: 'Oyo',
+        trip_date: '12-06-2019',
+        fare: '12.666',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/trips/create')
+        .set('Authorization', `Digest ${adminToken}`)
+        .send(newTrip)
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error').eql('Invalid token type. Must be type Bearer');
           done();
         });
     });
@@ -139,7 +222,7 @@ describe('Test for trips creation and get', () => {
           res.body.should.be.a('object');
           res.body.should.have
             .property('error')
-            .eql('bus_id is required');
+            .eql('bus_id is required and must be an integer');
           done();
         });
     });
@@ -160,7 +243,7 @@ describe('Test for trips creation and get', () => {
           res.body.should.be.a('object');
           res.body.should.have
             .property('error')
-            .eql('origin is required');
+            .eql('origin is required and must be a string');
           done();
         });
     });
@@ -181,7 +264,7 @@ describe('Test for trips creation and get', () => {
           res.body.should.be.a('object');
           res.body.should.have
             .property('error')
-            .eql('destination is required');
+            .eql('destination is required and must be a string');
           done();
         });
     });

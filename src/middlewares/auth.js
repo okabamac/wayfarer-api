@@ -1,7 +1,7 @@
 import moment from 'moment';
 import jwt from 'jsonwebtoken';
-import ResponseGenerator from '../utils/response.generator';
-import keys from '../utils/config';
+import ResponseGenerator from '../utilities/response.util';
+import keys from '../utilities/config.util';
 
 const response = new ResponseGenerator();
 

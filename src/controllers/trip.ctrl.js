@@ -1,5 +1,5 @@
 import TripService from '../services/trip.service';
-import ResponseGenerator from '../utils/response.generator';
+import ResponseGenerator from '../utilities/response.util';
 
 const response = new ResponseGenerator();
 
