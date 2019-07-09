@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import { Pool } from 'pg';
 
 import moment from 'moment';
-import keys from '../utils/config';
+import keys from '../utilities/config.util';
 
 const { psqlUrl, psqlTest } = keys;
 
@@ -12,12 +12,12 @@ const tableSeeds = `
     users
       VALUES 
       ( default, 'markokaba99@gmail.com', 'Mac', 'Okaba', ${true}, '$2a$10$17MpQeJWeiXDlMhae/UvkO8I04nB4XOX24FnH0qN9i3VO8r9WFHni'),
-      ( default, 'aminuaminu@g.com', 'Aminu', 'Tokien', ${false}, '$2a$10$17MpQeJWeiXDlMhae/UvkO8I04nB4XOX24FnH0qN9i3VO8r9WFHni');
+      ( default, 'jj06@gmail.com', 'Joey', 'King', ${false}, '$2a$10$17MpQeJWeiXDlMhae/UvkO8I04nB4XOX24FnH0qN9i3VO8r9WFHni');
   INSERT INTO
     trips
       VALUES 
-      ( default, 20, 'Ogun', 'Oyo', 2010.033, '${date}', 1),
-      ( default, 25, 'Ogoja', 'Calabar', 123.00, '${date}', 1);
+      ( default, 20, 'Ogun', 'Oyo', 2010.033, '${date}', 'active', 1),
+      ( default, 25, 'Ogoja', 'Calabar', 123.00, '${date}', 'cancelled', 1);
 `;
 dotenv.config();
 const pool = new Pool({

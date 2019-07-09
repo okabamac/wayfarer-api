@@ -1,13 +1,12 @@
 import dotenv from 'dotenv';
 import { Pool } from 'pg';
 
-import keys from '../utils/config';
+import keys from '../utilities/config.util';
 
 const { psqlUrl, psqlTest } = keys;
 
 const createTables = `
-  DROP TABLE IF EXISTS users;
-  DROP TABLE IF EXISTS trips;
+  DROP TABLE IF EXISTS users, trips CASCADE;
   CREATE TABLE IF NOT EXISTS
   users(
     user_id SERIAL PRIMARY KEY,
@@ -25,6 +24,7 @@ const createTables = `
     destination VARCHAR(150) NOT NULL ,
     fare FLOAT NOT NULL,
     trip_date TIMESTAMP,
+    status VARCHAR(100) NOT NULL,
     created_by INTEGER NOT NULL
   );
 `;

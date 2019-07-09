@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
-import Trip from '../models/trip.model';
+import TripModel from '../models/trips.model';
 
-
+const Trip = new TripModel('trips');
 class Tripservice {
   /** Add Trip to the db
    * @description Operate on a Trip and his account
@@ -10,39 +10,12 @@ class Tripservice {
 
   static async addTrip(req) {
     try {
-      const {
-        bus_id,
-        origin,
-        destination,
-        trip_date,
-        fare,
-      } = req.body;
-      const foundTrip = await Trip.filter(trip => trip.bus_id === bus_id
-        && trip.origin === origin
-        && trip.destination === destination
-        && trip.trip_date.getTime() === trip_date.getTime())[0];
+      const foundTrip = await Trip.findTripByMultipleParam(req.body);
       if (foundTrip) {
         throw new Error('This bus is already scheduled for the same trip');
       }
-      const newTrip = {
-        trip_id: Trip.length + 1,
-        bus_id,
-        origin,
-        destination,
-        fare,
-        trip_date,
-        created_by: req.user_id,
-      };
-      await Trip.push(newTrip);
-      return {
-        trip_id: newTrip.trip_id,
-        bus_id,
-        origin,
-        destination,
-        fare,
-        trip_date,
-        created_by: req.user_id,
-      };
+      const newTrip = await Trip.createANewTrip(req.body, req.user_id);
+      return newTrip;
     } catch (err) {
       throw err;
     }
@@ -50,7 +23,8 @@ class Tripservice {
 
   static async getAllTrips(req) {
     try {
-      return Trip;
+      const allTrips = await Trip.findAllTrips();
+      return allTrips;
     } catch (err) {
       throw err;
     }

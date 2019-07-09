@@ -1,4 +1,4 @@
-import General from './general.utilities';
+import General from './general.util';
 
 /**
  * A class for generating API responses

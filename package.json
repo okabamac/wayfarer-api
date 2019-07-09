@@ -37,8 +37,8 @@
   },
   "scripts": {
     "lint": "eslint src/ --fix",
-    "start": "babel-node src/server/index.js",
-    "dev": "nodemon --exec babel-node src/server/index.js",
+    "start": "babel-node index.js",
+    "dev": "nodemon --exec babel-node index.js",
     "test": "export NODE_ENV=test || set NODE_ENV=test&& npm run create && npm run seed && nyc --require @babel/register ---reporter=html --reporter=text mocha src/test/**.test.js --timeout 20000 --exit",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "coverage": "nyc report --reporter=text-lcov | coveralls",

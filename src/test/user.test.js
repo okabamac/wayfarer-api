@@ -2,7 +2,7 @@ import chai from 'chai';
 
 import chaiHttp from 'chai-http';
 
-import app from '../server/app';
+import app from '../../app';
 
 chai.use(chaiHttp);
 chai.should();
@@ -52,6 +52,18 @@ describe('Test user signup and login', () => {
           res.body.data.should.have.property('last_name');
           res.body.data.should.have.property('token');
           res.body.data.should.have.property('is_admin').eql(false);
+          done();
+        });
+    });
+    it('it should throw error because email is already taken', (done) => {
+      chai
+        .request(app)
+        .post('/api/v1/users/auth/signup')
+        .send(newUser)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error').eql('Email is already in use');
           done();
         });
     });

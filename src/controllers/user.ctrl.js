@@ -1,5 +1,5 @@
 import UserService from '../services/user.service';
-import ResponseGenerator from '../utils/response.generator';
+import ResponseGenerator from '../utilities/response.util';
 
 const response = new ResponseGenerator();
 
@@ -29,7 +29,7 @@ class UserController {
 
   static async login(req, res) {
     try {
-      const user = await UserService.login(req.body);
+      const user = await UserService.login(req);
       if (user) {
         return response.sendSuccess(
           res,
