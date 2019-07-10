@@ -281,5 +281,25 @@ describe('Test user signup and login', () => {
           done();
         });
     });
+    it('it should throw error because of params not valid', (done) => {
+      const payload = {
+        password: 'password123333333',
+        email: 'okabamac@gmail.com',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/users/auth/%%%%...#$$')
+        .send(payload)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('error')
+            .eql(
+              'Failed to decode param: /api/v1/users/auth/%%%%...',
+            );
+          done();
+        });
+    });
   });
 });

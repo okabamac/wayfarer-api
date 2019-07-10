@@ -2,7 +2,7 @@
 import TripModel from '../models/trips.model';
 
 const Trip = new TripModel('trips');
-class Tripservice {
+class TripService {
   /** Add Trip to the db
    * @description Operate on a Trip and his account
    * @param {object} a new Trip object
@@ -31,4 +31,4 @@ class Tripservice {
   }
 }
 
-export default Tripservice;
+export default TripService;

@@ -1,15 +1,19 @@
 import { Router } from 'express';
 
-import tripCtrl from '../controllers/trip.ctrl';
+import busCtrl from '../controllers/bus.ctrl';
 import auth from '../middlewares/auth';
 import bodyValidation from '../middlewares/validation/body.validation';
 import paramValidation from '../middlewares/validation/param.validation';
 
-
 const router = Router();
 
 router
-  .post('/create', [auth.authenticate, auth.isAdmin, bodyValidation], tripCtrl.addTrip)
-  .get('/', [auth.authenticate, paramValidation, bodyValidation], tripCtrl.getAll);
+  .post(
+    '/register',
+    [auth.authenticate, auth.isAdmin, bodyValidation],
+    busCtrl.addBus,
+  )
+  .get('/', [auth.authenticate], busCtrl.getAll)
+  .get('/:bus_id', [auth.authenticate, paramValidation], busCtrl.getOne);
 
 export default router;

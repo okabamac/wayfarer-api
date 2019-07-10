@@ -39,11 +39,12 @@
     "lint": "eslint src/ --fix",
     "start": "babel-node index.js",
     "dev": "nodemon --exec babel-node index.js",
-    "test": "export NODE_ENV=test || set NODE_ENV=test&& npm run create && npm run seed && nyc --require @babel/register ---reporter=html --reporter=text mocha src/test/**.test.js --timeout 20000 --exit",
+    "test": "export NODE_ENV=test || set NODE_ENV=test&& npm run prepareDB && nyc --require @babel/register ---reporter=html --reporter=text mocha src/test/**.test.js --timeout 20000 --exit",
     "coveralls": "nyc npm test && nyc report --reporter=text-lcov | coveralls",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "create": "babel-node src/models/db.model",
-    "seed": "babel-node src/models/seed.model"
+    "seed": "babel-node src/models/seed.model",
+    "prepareDB": "npm run create && npm run seed"
   },
   "repository": {
     "type": "git",
