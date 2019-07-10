@@ -1,5 +1,5 @@
 import Joi from '@hapi/joi';
-import Schemas from './schema/bodySchema';
+import Schemas from './schema/body.schema';
 
 const bodyValidation = (req, res, next) => {
   // enabled HTTP methods for request data validation

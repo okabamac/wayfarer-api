@@ -6,7 +6,7 @@ import keys from '../utilities/config.util';
 const { psqlUrl, psqlTest } = keys;
 
 const createTables = `
-  DROP TABLE IF EXISTS users, trips CASCADE;
+  DROP TABLE IF EXISTS users, trips, buses CASCADE;
   CREATE TABLE IF NOT EXISTS
   users(
     user_id SERIAL PRIMARY KEY,
@@ -26,6 +26,16 @@ const createTables = `
     trip_date TIMESTAMP,
     status VARCHAR(100) NOT NULL,
     created_by INTEGER NOT NULL
+  );
+  CREATE TABLE IF NOT EXISTS
+  buses(
+    bus_id SERIAL PRIMARY KEY,
+    number_plate VARCHAR(150) NOT NULL ,
+    manufacturer VARCHAR(150) NOT NULL ,
+    model VARCHAR(150) NOT NULL ,
+    year VARCHAR(150) NOT NULL ,
+    capacity INTEGER NOT NULL ,
+    registered_by INTEGER NOT NULL
   );
 `;
 

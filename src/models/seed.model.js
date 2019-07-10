@@ -18,6 +18,11 @@ const tableSeeds = `
       VALUES 
       ( default, 20, 'Ogun', 'Oyo', 2010.033, '${date}', 'active', 1),
       ( default, 25, 'Ogoja', 'Calabar', 123.00, '${date}', 'cancelled', 1);
+  INSERT INTO
+    buses
+      VALUES 
+      ( default, 'ABJ32-456', 'Toyota', 'Hiace', '2016', 18, 1),
+      ( default, 'LAG25-6336', 'Mercedes', 'Fortnight', '2018', 20, 1);
 `;
 dotenv.config();
 const pool = new Pool({
