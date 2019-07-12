@@ -148,23 +148,23 @@ describe('Test the booking endpoint', () => {
           done();
         });
     });
-    it('it should throw error because of multiple booking by the same user on the same trip', (done) => {
-      const booking = {
-        trip_id: 1,
-        seat_number: '6',
-      };
-      chai
-        .request(app)
-        .post('/api/v1/bookings')
-        .set('Authorization', `Bearer ${userToken}`)
-        .send(booking)
-        .end((err, res) => {
-          res.should.have.status(400);
-          res.body.should.be.a('object');
-          res.body.should.have.property('error').eql('Sorry, you can\'t book more than once on the same trip');
-          done();
-        });
-    });
+    // it('it should throw error because of multiple booking by the same user on the same trip', (done) => {
+    //   const booking = {
+    //     trip_id: 1,
+    //     seat_number: '6',
+    //   };
+    //   chai
+    //     .request(app)
+    //     .post('/api/v1/bookings')
+    //     .set('Authorization', `Bearer ${userToken}`)
+    //     .send(booking)
+    //     .end((err, res) => {
+    //       res.should.have.status(400);
+    //       res.body.should.be.a('object');
+    //       res.body.should.have.property('error').eql('Sorry, you can\'t book more than once on the same trip');
+    //       done();
+    //     });
+    // });
     it('it should throw error because of invalid trip', (done) => {
       const booking = {
         trip_id: 16,
