@@ -9,8 +9,12 @@ const busIdSchema = Joi.object({
 const bookingIdSchema = Joi.object({
   bookiing_id: id.error(new Error('booking_id is required and must be an integer')),
 });
+const tripIdSchema = Joi.object({
+  trip_id: id.error(new Error('trip_id is required and must be an integer')),
+});
 
 export default {
   '/buses/:bus_id': busIdSchema,
   '/bookings/:booking_id': bookingIdSchema,
+  '/tripss/:trip_id': tripIdSchema,
 };

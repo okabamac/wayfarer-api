@@ -415,5 +415,59 @@ describe('Test for trips creation and get', () => {
           done();
         });
     });
+    it('Admin should be able to cancel a trip', (done) => {
+      chai
+        .request(app)
+        .patch('/api/v1/trips/1')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('data');
+          res.body.should.have
+            .property('message')
+            .eql('Trip cancelled successfully');
+          res.body.data.should.have.property('trip_id');
+          res.body.data.should.have.property('bus_id');
+          res.body.data.should.have.property('fare');
+          res.body.data.should.have.property('trip_date');
+          res.body.data.should.have.property('bus_capacity');
+          res.body.data.should.have.property('origin');
+          res.body.data.should.have.property('destination');
+          res.body.data.should.have.property('status');
+          res.body.data.should.have.property('created_by');
+          res.body.data.should.have.property('departure_time');
+          done();
+        });
+    });
+    it('Admin should not be able to cancel a trip that does\'t exist', (done) => {
+      chai
+        .request(app)
+        .patch('/api/v1/trips/20')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('error')
+            .eql('This trip doesn\'t exist');
+          done();
+        });
+    });
+    it('Regular users should not be able to cancel a trip that does\'t exist', (done) => {
+      chai
+        .request(app)
+        .patch('/api/v1/trips/1')
+        .set('Authorization', `Bearer ${userToken}`)
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('error')
+            .eql('Authorized for only admins');
+          done();
+        });
+    });
   });
 });

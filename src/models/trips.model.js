@@ -20,10 +20,24 @@ class Trip extends Query {
     }
   }
 
+  async modifyTheTrip(req) {
+    try {
+      const { rows } = await this.modify(['cancelled', Number(req.params.trip_id)]);
+      return rows[0];
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async findTripByMultipleParam(req) {
     try {
-      const { rows } = await this.findByMultipleParam('bus_id', 'origin', 'destination', 'trip_date',
-        [req.bus_id, req.origin, req.destination, req.trip_date]);
+      const { rows } = await this.findByMultipleParam(
+        'bus_id',
+        'origin',
+        'destination',
+        'trip_date',
+        [req.bus_id, req.origin, req.destination, req.trip_date],
+      );
       return rows[0];
     } catch (err) {
       throw err;
