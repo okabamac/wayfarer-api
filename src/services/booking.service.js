@@ -41,6 +41,19 @@ class Bookingservice {
       throw err;
     }
   }
+
+  static async getBookings(req) {
+    try {
+      if (req.is_admin) {
+        const allBookings = await Booking.findAllBookings();
+        return allBookings;
+      }
+      const userBookings = await Booking.findBookingByID(req.user_id);
+      return userBookings;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 export default Bookingservice;

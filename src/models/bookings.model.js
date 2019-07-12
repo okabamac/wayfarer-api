@@ -42,6 +42,24 @@ class Booking extends Query {
       throw err;
     }
   }
+
+  async findAllBookings() {
+    try {
+      const { rows } = await this.findAll('*');
+      return rows;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async findBookingByID(id) {
+    try {
+      const { rows } = await this.findByOneParam('user_id', [id]);
+      return rows;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 export default Booking;
