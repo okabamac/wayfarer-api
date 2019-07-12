@@ -85,6 +85,11 @@ export default class Query {
       const response = await this.pool.query(query);
       return response;
     } catch (err) {
+      if (err.constraint === 'pk_booking_id') {
+        throw new Error(
+          "Sorry, you can't book more than once on the same trip",
+        );
+      }
       throw err;
     }
   }
