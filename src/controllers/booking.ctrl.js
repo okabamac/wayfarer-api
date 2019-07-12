@@ -22,6 +22,18 @@ class BookingController {
       return response.sendError(res, 400, err.message);
     }
   }
+
+  static async getAll(req, res) {
+    try {
+      const booking = await BookingService.getBookings(req);
+      if (booking) {
+        return response.sendSuccess(res, 200, booking);
+      }
+      return response.sendError(res, 500, 'Something went wrong');
+    } catch (err) {
+      return response.sendError(res, 400, err.message);
+    }
+  }
 }
 
 export default BookingController;

@@ -11,6 +11,11 @@ router
     '/bookings',
     [auth.authenticate, bodyValidation],
     bookingCtrl.addBooking,
+  )
+  .get(
+    '/bookings',
+    [auth.authenticate],
+    bookingCtrl.getAll,
   );
 
 export default router;

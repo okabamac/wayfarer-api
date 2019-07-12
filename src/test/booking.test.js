@@ -8,6 +8,7 @@ chai.use(chaiHttp);
 chai.should();
 
 let userToken;
+let adminToken;
 const newUser = {
   email: 'jerrylaw@gmail.com',
   first_name: 'Jerry',
@@ -53,6 +54,24 @@ describe('Test the booking endpoint', () => {
           res.body.data.should.have.property('token');
           const { token } = res.body.data;
           userToken = token;
+          done();
+        });
+    });
+    it('it should sign in the admin user and return a token', (done) => {
+     const adminLogin = {
+       email: "markokaba99@gmail.com",
+       password: "johnbaby"
+     };
+      chai
+        .request(app)
+        .post('/api/v1/auth/signin')
+        .send(adminLogin)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.data.should.have.property('token');
+          const { token } = res.body.data;
+          adminToken = token;
           done();
         });
     });
@@ -215,6 +234,28 @@ describe('Test the booking endpoint', () => {
           res.body.should.have
             .property('error')
             .eql('This seat number doesn\'t exist, choose between 1-1');
+          done();
+        });
+    });
+    it('admin should be able to see all the bookings', (done) => {
+      chai
+        .request(app)
+        .get('/api/v1/bookings')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          done();
+        });
+    });
+    it('user should be able to see all his/her bookings', (done) => {
+      chai
+        .request(app)
+        .get('/api/v1/bookings')
+        .set('Authorization', `Bearer ${userToken}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
           done();
         });
     });
