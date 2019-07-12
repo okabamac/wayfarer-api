@@ -23,7 +23,7 @@ describe('Test for bus registration and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/users/auth/signin')
+        .post('/api/v1/auth/signin')
         .send(user)
         .end((err, res) => {
           res.should.have.status(200);
@@ -41,7 +41,7 @@ describe('Test for bus registration and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/users/auth/signin')
+        .post('/api/v1/auth/signin')
         .send(user)
         .end((err, res) => {
           res.should.have.status(200);
@@ -63,7 +63,7 @@ describe('Test for bus registration and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/buses/register')
+        .post('/api/v1/buses')
         .set('Authorization', `Bearer ${adminToken}`)
         .send(newBus)
         .end((err, res) => {
@@ -88,7 +88,7 @@ describe('Test for bus registration and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/buses/register')
+        .post('/api/v1/buses')
         .set('Authorization', `Bearer ${adminToken}`)
         .send(newBus)
         .end((err, res) => {
@@ -109,7 +109,7 @@ describe('Test for bus registration and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/buses/register')
+        .post('/api/v1/buses')
         .set('Authorization', `Bearer ${userToken}`)
         .send(newBus)
         .end((err, res) => {
@@ -130,7 +130,7 @@ describe('Test for bus registration and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/buses/register')
+        .post('/api/v1/buses')
         .set('Authorization', `Bearer ${adminToken}`)
         .send(newBus)
         .end((err, res) => {
@@ -151,7 +151,7 @@ describe('Test for bus registration and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/buses/register')
+        .post('/api/v1/buses')
         .set('Authorization', `Bearer ${adminToken}`)
         .send(newBus)
         .end((err, res) => {
@@ -172,7 +172,7 @@ describe('Test for bus registration and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/buses/register')
+        .post('/api/v1/buses')
         .set('Authorization', `Bearer ${adminToken}`)
         .send(newBus)
         .end((err, res) => {
@@ -193,7 +193,7 @@ describe('Test for bus registration and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/buses/register')
+        .post('/api/v1/buses')
         .set('Authorization', `Bearer ${adminToken}`)
         .send(newBus)
         .end((err, res) => {
@@ -214,7 +214,7 @@ describe('Test for bus registration and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/buses/register')
+        .post('/api/v1/buses')
         .set('Authorization', `Bearer ${adminToken}`)
         .send(newBus)
         .end((err, res) => {
@@ -280,7 +280,7 @@ describe('Test for bus registration and get', () => {
         .get('/api/v1/buses/50000000')
         .set('Authorization', `Bearer ${adminToken}`)
         .end((err, res) => {
-          res.should.have.status(404);
+          res.should.have.status(400);
           res.body.should.be.a('object');
           res.body.should.have.property('error').eql('This bus does not exist');
           done();

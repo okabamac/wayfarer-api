@@ -13,7 +13,7 @@ class Trip extends Query {
 
   async findAllTrips() {
     try {
-      const { rows } = await this.findAll();
+      const { rows } = await this.findAll('*');
       return rows;
     } catch (err) {
       throw err;
@@ -31,11 +31,22 @@ class Trip extends Query {
   }
 
   async createANewTrip(req, user_id) {
+    const trip_datetime = req.trip_date;
+    const formatted_date = `${trip_datetime.getFullYear()}-${trip_datetime.getMonth()
+      + 1}-${trip_datetime.getDate()} ${trip_datetime.getHours()}:${trip_datetime.getMinutes()}:${trip_datetime.getSeconds()}`;
+
     try {
-      const { rows } = await this.insertIntoDB(
-        'bus_id, origin, destination, fare, trip_date, status, created_by',
-        '$1, $2, $3, $4, $5, $6, $7',
-        [req.bus_id, req.origin, req.destination, req.fare, req.trip_date, req.status, user_id],
+      const { rows } = await this.insertWithSelect(
+        'bus_id, origin, destination, fare, trip_date, departure_time, status, created_by, bus_capacity',
+        `${req.bus_id}, '${req.origin}', '${req.destination}', ${
+          req.fare
+        }, '${formatted_date}', '${req.departure_time}', '${
+          req.status
+        }', ${user_id}`,
+        'capacity',
+        'buses',
+        'bus_id',
+        `${req.bus_id}`,
       );
       return rows[0];
     } catch (err) {

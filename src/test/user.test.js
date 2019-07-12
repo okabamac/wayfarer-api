@@ -42,7 +42,7 @@ describe('Test user signup and login', () => {
     it('it should create a new user', (done) => {
       chai
         .request(app)
-        .post('/api/v1/users/auth/signup')
+        .post('/api/v1/auth/signup')
         .send(newUser)
         .end((err, res) => {
           res.should.have.status(200);
@@ -58,7 +58,7 @@ describe('Test user signup and login', () => {
     it('it should throw error because email is already taken', (done) => {
       chai
         .request(app)
-        .post('/api/v1/users/auth/signup')
+        .post('/api/v1/auth/signup')
         .send(newUser)
         .end((err, res) => {
           res.should.have.status(400);
@@ -70,7 +70,7 @@ describe('Test user signup and login', () => {
     it('it should throw error because email is already taken', (done) => {
       chai
         .request(app)
-        .post('/api/v1/users/auth/signup')
+        .post('/api/v1/auth/signup')
         .send(newUser)
         .end((err, res) => {
           res.should.have.status(400);
@@ -89,7 +89,7 @@ describe('Test user signup and login', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/users/auth/signup')
+        .post('/api/v1/auth/signup')
         .send(badRequest)
         .end((err, res) => {
           res.should.have.status(400);
@@ -108,7 +108,7 @@ describe('Test user signup and login', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/users/auth/signup')
+        .post('/api/v1/auth/signup')
         .send(badRequest)
         .end((err, res) => {
           res.should.have.status(400);
@@ -127,7 +127,7 @@ describe('Test user signup and login', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/users/auth/signup')
+        .post('/api/v1/auth/signup')
         .send(badRequest)
         .end((err, res) => {
           res.should.have.status(400);
@@ -147,7 +147,7 @@ describe('Test user signup and login', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/users/auth/signup')
+        .post('/api/v1/auth/signup')
         .send(badRequest)
         .end((err, res) => {
           res.should.have.status(400);
@@ -169,7 +169,7 @@ describe('Test user signup and login', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/users/auth/signup')
+        .post('/api/v1/auth/signup')
         .send(badRequest)
         .end((err, res) => {
           res.should.have.status(400);
@@ -191,7 +191,7 @@ describe('Test user signup and login', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/users/auth/signup')
+        .post('/api/v1/auth/signup')
         .send(badRequest)
         .end((err, res) => {
           res.should.have.status(400);
@@ -211,7 +211,7 @@ describe('Test user signup and login', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/users/auth/signup')
+        .post('/api/v1/auth/signup')
         .send(badRequest)
         .end((err, res) => {
           res.should.have.status(400);
@@ -229,7 +229,7 @@ describe('Test user signup and login', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/users/auth/signin')
+        .post('/api/v1/auth/signin')
         .send(payload)
         .end((err, res) => {
           res.should.have.status(200);
@@ -252,7 +252,7 @@ describe('Test user signup and login', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/users/auth/signin')
+        .post('/api/v1/auth/signin')
         .send(payload)
         .end((err, res) => {
           res.should.have.status(400);
@@ -270,7 +270,7 @@ describe('Test user signup and login', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/users/auth/signin')
+        .post('/api/v1/auth/signin')
         .send(payload)
         .end((err, res) => {
           res.should.have.status(400);
@@ -288,7 +288,7 @@ describe('Test user signup and login', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/users/auth/%%%%...#$$')
+        .post('/api/v1/auth/%%%%...#$$')
         .send(payload)
         .end((err, res) => {
           res.should.have.status(400);
@@ -296,7 +296,7 @@ describe('Test user signup and login', () => {
           res.body.should.have
             .property('error')
             .eql(
-              'Failed to decode param: /api/v1/users/auth/%%%%...',
+              'Failed to decode param: /api/v1/auth/%%%%...',
             );
           done();
         });

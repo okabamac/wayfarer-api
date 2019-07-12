@@ -9,11 +9,11 @@ const router = Router();
 
 router
   .post(
-    '/register',
+    '/buses',
     [auth.authenticate, auth.isAdmin, bodyValidation],
     busCtrl.addBus,
   )
-  .get('/', [auth.authenticate], busCtrl.getAll)
-  .get('/:bus_id', [auth.authenticate, paramValidation], busCtrl.getOne);
+  .get('/buses', [auth.authenticate], busCtrl.getAll)
+  .get('/buses/:bus_id', [auth.authenticate, paramValidation], busCtrl.getOne);
 
 export default router;
