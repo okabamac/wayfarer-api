@@ -16,6 +16,11 @@ router
     '/bookings',
     [auth.authenticate],
     bookingCtrl.getAll,
+  )
+  .delete(
+    '/bookings/:booking_id',
+    [auth.authenticate],
+    bookingCtrl.deleteABooking,
   );
 
 export default router;

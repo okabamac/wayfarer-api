@@ -58,10 +58,10 @@ describe('Test the booking endpoint', () => {
         });
     });
     it('it should sign in the admin user and return a token', (done) => {
-     const adminLogin = {
-       email: "markokaba99@gmail.com",
-       password: "johnbaby"
-     };
+      const adminLogin = {
+        email: 'markokaba99@gmail.com',
+        password: 'johnbaby',
+      };
       chai
         .request(app)
         .post('/api/v1/auth/signin')
@@ -167,23 +167,6 @@ describe('Test the booking endpoint', () => {
           done();
         });
     });
-    // it('it should throw error because of multiple booking by the same user on the same trip', (done) => {
-    //   const booking = {
-    //     trip_id: 1,
-    //     seat_number: '6',
-    //   };
-    //   chai
-    //     .request(app)
-    //     .post('/api/v1/bookings')
-    //     .set('Authorization', `Bearer ${userToken}`)
-    //     .send(booking)
-    //     .end((err, res) => {
-    //       res.should.have.status(400);
-    //       res.body.should.be.a('object');
-    //       res.body.should.have.property('error').eql('Sorry, you can\'t book more than once on the same trip');
-    //       done();
-    //     });
-    // });
     it('it should throw error because of invalid trip', (done) => {
       const booking = {
         trip_id: 16,
@@ -256,6 +239,34 @@ describe('Test the booking endpoint', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
+          done();
+        });
+    });
+    it('user should be able to delete a user\'s booking', (done) => {
+      chai
+        .request(app)
+        .delete('/api/v1/bookings/3')
+        .set('Authorization', `Bearer ${userToken}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have.a
+            .property('message')
+            .eql('Booking deleted successfully');
+          done();
+        });
+    });
+    it('user should not be able to delete a user\'s booking because of access or invalid booking', (done) => {
+      chai
+        .request(app)
+        .delete('/api/v1/bookings/6')
+        .set('Authorization', `Bearer ${userToken}`)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('error')
+            .eql('You don\'t seem to have access to this booking');
           done();
         });
     });

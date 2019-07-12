@@ -5,7 +5,7 @@ import Schemas from './schema/param.schema';
 
 const bodyValidation = (req, res, next) => {
   // enabled HTTP methods for request data validation
-  const supportedMethods = ['get'];
+  const supportedMethods = ['get', 'delete', 'patch'];
 
   // Joi validation options
   const validationOptions = {
