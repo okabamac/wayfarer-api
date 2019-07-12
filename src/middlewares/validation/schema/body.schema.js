@@ -15,6 +15,10 @@ const password = Joi.string()
   .required()
   .strict();
 
+
+const id = Joi.number().integer().positive().min(1)
+  .required();
+
 const createUserSchema = Joi.object({
   first_name: string.required(),
   last_name: string.required(),
@@ -57,6 +61,8 @@ const createTripSchema = Joi.object({
   status: string.valid('active', 'cancelled').default('active', {
     invalid: true,
   }),
+  departure_time: Joi.string().error(new Error('departure_time is required and must be a string'))
+    .required(),
 });
 const addBusSchema = Joi.object({
   number_plate: Joi.string()
@@ -79,9 +85,15 @@ const addBusSchema = Joi.object({
     .required(),
 });
 
+const makeBookingSchema = Joi.object({
+  trip_id: id.error(new Error('trip_id is required and must be an integer')),
+  seat_number: id.error(new Error('seat_number is required and must be an integer')),
+});
+
 export default {
   '/auth/signup': createUserSchema,
   '/auth/signin': signinUserSchema,
-  '/create': createTripSchema,
-  '/register': addBusSchema,
+  '/trips': createTripSchema,
+  '/buses': addBusSchema,
+  '/bookings': makeBookingSchema,
 };

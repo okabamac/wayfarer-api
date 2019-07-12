@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
 import TripModel from '../models/trips.model';
+import BusModel from '../models/buses.model';
 
+const Bus = new BusModel('buses');
 const Trip = new TripModel('trips');
 class TripService {
   /** Add Trip to the db
@@ -10,6 +12,10 @@ class TripService {
 
   static async addTrip(req) {
     try {
+      const bus = await Bus.findBusById(req.body.bus_id);
+      if (!bus) {
+        throw new Error('This bus does not exist');
+      }
       const foundTrip = await Trip.findTripByMultipleParam(req.body);
       if (foundTrip) {
         throw new Error('This bus is already scheduled for the same trip');

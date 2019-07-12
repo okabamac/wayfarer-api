@@ -1,4 +1,4 @@
-//Thanks to timicodes for this helper
+// Thanks to timicodes for this helper
 
 import Joi from '@hapi/joi';
 import Schemas from './schema/param.schema';

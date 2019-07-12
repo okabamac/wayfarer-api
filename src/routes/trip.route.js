@@ -9,7 +9,7 @@ import paramValidation from '../middlewares/validation/param.validation';
 const router = Router();
 
 router
-  .post('/create', [auth.authenticate, auth.isAdmin, bodyValidation], tripCtrl.addTrip)
-  .get('/', [auth.authenticate, paramValidation, bodyValidation], tripCtrl.getAll);
+  .post('/trips', [auth.authenticate, auth.isAdmin, bodyValidation], tripCtrl.addTrip)
+  .get('/trips', [auth.authenticate, paramValidation, bodyValidation], tripCtrl.getAll);
 
 export default router;

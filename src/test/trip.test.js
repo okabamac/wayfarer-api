@@ -25,7 +25,7 @@ describe('Test for trips creation and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/users/auth/signin')
+        .post('/api/v1/auth/signin')
         .send(user)
         .end((err, res) => {
           res.should.have.status(200);
@@ -44,7 +44,7 @@ describe('Test for trips creation and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/users/auth/signin')
+        .post('/api/v1/auth/signin')
         .send(user)
         .end((err, res) => {
           res.should.have.status(200);
@@ -58,7 +58,8 @@ describe('Test for trips creation and get', () => {
     });
     it('it should create a new trip', (done) => {
       const newTrip = {
-        bus_id: '1235',
+        bus_id: '1',
+        departure_time: '4pm',
         origin: 'Ogun',
         destination: 'Oyo',
         trip_date: '12-06-2019',
@@ -66,7 +67,7 @@ describe('Test for trips creation and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/trips/create')
+        .post('/api/v1/trips')
         .set('Authorization', `Bearer ${adminToken}`)
         .send(newTrip)
         .end((err, res) => {
@@ -76,17 +77,19 @@ describe('Test for trips creation and get', () => {
           res.body.data.should.have.property('bus_id');
           res.body.data.should.have.property('fare');
           res.body.data.should.have.property('trip_date');
-          res.body.data.should.have.property('origin');
+          res.body.data.should.have.property('bus_capacity');
           res.body.data.should.have.property('origin');
           res.body.data.should.have.property('destination');
           res.body.data.should.have.property('status');
           res.body.data.should.have.property('created_by');
+          res.body.data.should.have.property('departure_time');
           done();
         });
     });
     it('it should not create a new trip because of administrative rights', (done) => {
       const newTrip = {
         bus_id: '1235',
+        departure_time: '4pm',
         origin: 'Ogun',
         destination: 'Oyo',
         trip_date: '12-06-2019',
@@ -94,7 +97,7 @@ describe('Test for trips creation and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/trips/create')
+        .post('/api/v1/trips')
         .set('Authorization', `Bearer ${userToken}`)
         .send(newTrip)
         .end((err, res) => {
@@ -107,6 +110,7 @@ describe('Test for trips creation and get', () => {
     it('it should not create a new trip because of expired token', (done) => {
       const newTrip = {
         bus_id: '1235',
+        departure_time: '4pm',
         origin: 'Ogun',
         destination: 'Oyo',
         trip_date: '12-06-2019',
@@ -114,7 +118,7 @@ describe('Test for trips creation and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/trips/create')
+        .post('/api/v1/trips')
         .set('Authorization', `Bearer ${expiredToken}`)
         .send(newTrip)
         .end((err, res) => {
@@ -127,6 +131,7 @@ describe('Test for trips creation and get', () => {
     it('it should not create a new trip because of invalid token', (done) => {
       const newTrip = {
         bus_id: '1235',
+        departure_time: '4pm',
         origin: 'Ogun',
         destination: 'Oyo',
         trip_date: '12-06-2019',
@@ -134,7 +139,7 @@ describe('Test for trips creation and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/trips/create')
+        .post('/api/v1/trips')
         .set('Authorization', `Bearer ${invalidToken}`)
         .send(newTrip)
         .end((err, res) => {
@@ -147,6 +152,7 @@ describe('Test for trips creation and get', () => {
     it('it should not create a new trip because no token is supplied', (done) => {
       const newTrip = {
         bus_id: '1235',
+        departure_time: '4pm',
         origin: 'Ogun',
         destination: 'Oyo',
         trip_date: '12-06-2019',
@@ -154,7 +160,7 @@ describe('Test for trips creation and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/trips/create')
+        .post('/api/v1/trips')
         .send(newTrip)
         .end((err, res) => {
           res.should.have.status(401);
@@ -166,6 +172,7 @@ describe('Test for trips creation and get', () => {
     it('it should not create a new trip because no token type is not Bearer', (done) => {
       const newTrip = {
         bus_id: '1235',
+        departure_time: '4pm',
         origin: 'Ogun',
         destination: 'Oyo',
         trip_date: '12-06-2019',
@@ -173,7 +180,7 @@ describe('Test for trips creation and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/trips/create')
+        .post('/api/v1/trips')
         .set('Authorization', `Digest ${adminToken}`)
         .send(newTrip)
         .end((err, res) => {
@@ -185,7 +192,8 @@ describe('Test for trips creation and get', () => {
     });
     it('it should throw an error because of duplicate trip', (done) => {
       const newTrip = {
-        bus_id: '1235',
+        bus_id: '1',
+        departure_time: '4pm',
         origin: 'Ogun',
         destination: 'Oyo',
         trip_date: '12-06-2019',
@@ -193,7 +201,7 @@ describe('Test for trips creation and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/trips/create')
+        .post('/api/v1/trips')
         .set('Authorization', `Bearer ${adminToken}`)
         .send(newTrip)
         .end((err, res) => {
@@ -207,6 +215,7 @@ describe('Test for trips creation and get', () => {
     });
     it('it should throw an error because of missing bus id', (done) => {
       const newTrip = {
+        departure_time: '4pm',
         origin: 'Ogun',
         destination: 'Oyo',
         trip_date: '12-06-2019',
@@ -214,7 +223,7 @@ describe('Test for trips creation and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/trips/create')
+        .post('/api/v1/trips')
         .set('Authorization', `Bearer ${adminToken}`)
         .send(newTrip)
         .end((err, res) => {
@@ -226,16 +235,39 @@ describe('Test for trips creation and get', () => {
           done();
         });
     });
-    it('it should throw an error because of missing origin', (done) => {
+    it('it should throw an error because of missing departure time', (done) => {
       const newTrip = {
         bus_id: '1235',
+        origin: 'Ogun',
         destination: 'Oyo',
         trip_date: '12-06-2019',
         fare: '12.666',
       };
       chai
         .request(app)
-        .post('/api/v1/trips/create')
+        .post('/api/v1/trips')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send(newTrip)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('error')
+            .eql('departure_time is required and must be a string');
+          done();
+        });
+    });
+    it('it should throw an error because of missing origin', (done) => {
+      const newTrip = {
+        bus_id: '1235',
+        departure_time: '4pm',
+        destination: 'Oyo',
+        trip_date: '12-06-2019',
+        fare: '12.666',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/trips')
         .set('Authorization', `Bearer ${adminToken}`)
         .send(newTrip)
         .end((err, res) => {
@@ -250,13 +282,14 @@ describe('Test for trips creation and get', () => {
     it('it should throw an error because of missing destination', (done) => {
       const newTrip = {
         bus_id: '1235',
+        departure_time: '4pm',
         origin: 'Ogun',
         trip_date: '12-06-2019',
         fare: '12.666',
       };
       chai
         .request(app)
-        .post('/api/v1/trips/create')
+        .post('/api/v1/trips')
         .set('Authorization', `Bearer ${adminToken}`)
         .send(newTrip)
         .end((err, res) => {
@@ -271,13 +304,14 @@ describe('Test for trips creation and get', () => {
     it('it should throw an error because of missing trip date', (done) => {
       const newTrip = {
         bus_id: '1235',
+        departure_time: '4pm',
         origin: 'Ogun',
         destination: 'Oyo',
         fare: '12.666',
       };
       chai
         .request(app)
-        .post('/api/v1/trips/create')
+        .post('/api/v1/trips')
         .set('Authorization', `Bearer ${adminToken}`)
         .send(newTrip)
         .end((err, res) => {
@@ -292,6 +326,7 @@ describe('Test for trips creation and get', () => {
     it('it should throw an error because of missing invalid date', (done) => {
       const newTrip = {
         bus_id: '1235',
+        departure_time: '4pm',
         origin: 'Ogun',
         destination: 'Oyo',
         trip_date: 'jesus',
@@ -299,7 +334,7 @@ describe('Test for trips creation and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/trips/create')
+        .post('/api/v1/trips')
         .set('Authorization', `Bearer ${adminToken}`)
         .send(newTrip)
         .end((err, res) => {
@@ -314,13 +349,14 @@ describe('Test for trips creation and get', () => {
     it('it should throw an error because of missing fare', (done) => {
       const newTrip = {
         bus_id: '1235',
+        departure_time: '4pm',
         origin: 'Ogun',
         destination: 'Oyo',
         trip_date: '12-06-2019',
       };
       chai
         .request(app)
-        .post('/api/v1/trips/create')
+        .post('/api/v1/trips')
         .set('Authorization', `Bearer ${adminToken}`)
         .send(newTrip)
         .end((err, res) => {
@@ -333,6 +369,7 @@ describe('Test for trips creation and get', () => {
     it('it should throw an error because of invalid fare', (done) => {
       const newTrip = {
         bus_id: '1235',
+        departure_time: '4pm',
         origin: 'Ogun',
         destination: 'Oyo',
         trip_date: '12-06-2019',
@@ -340,7 +377,7 @@ describe('Test for trips creation and get', () => {
       };
       chai
         .request(app)
-        .post('/api/v1/trips/create')
+        .post('/api/v1/trips')
         .set('Authorization', `Bearer ${adminToken}`)
         .send(newTrip)
         .end((err, res) => {

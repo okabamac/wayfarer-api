@@ -10,8 +10,8 @@ export default class Query {
    * Find all documents in a table
    * @param {param}
    */
-  async findAll() {
-    const query = `SELECT * FROM ${this.table}`;
+  async findAll(selector) {
+    const query = `SELECT ${selector} FROM ${this.table}`;
     try {
       const response = await this.pool.query(query);
       return response;
@@ -38,6 +38,7 @@ export default class Query {
    * Find a specific document by multiple params
    * @param {param}
    */
+
   async findByMultipleParam(
     selector1,
     selector2,
@@ -63,7 +64,46 @@ export default class Query {
   async insertIntoDB(columns, selector, values) {
     const query = `INSERT INTO ${
       this.table
-    } (${columns}) VALUES(${selector}) returning *`;
+    } (${columns}) VALUES(${selector}) RETURNING *`;
+    try {
+      const response = await this.pool.query(query, values);
+      return response;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  /**
+   * Insert into db
+   * @param {bodyObject}
+   */
+  async insertWithSelect(columns, values, selector, secondTable, row, id) {
+    const query = `INSERT INTO
+    ${this.table} (${columns})
+      (SELECT ${values}, ${selector} FROM ${secondTable} WHERE ${row}=${id}) RETURNING *;`;
+    try {
+      const response = await this.pool.query(query);
+      return response;
+    } catch (err) {
+      if (err.constraint === 'pk_booking_id') {
+        throw new Error(
+          "Sorry, you can't book more than once on the same trip",
+        );
+      }
+      throw err;
+    }
+  }
+
+  /**
+   * Insert into db
+   * @param {bodyObject}
+   */
+  async findTripBooking(columns, secondTable, values) {
+    const query = `SELECT *
+    FROM ${secondTable}
+    LEFT JOIN (SELECT seat_number FROM ${this.table}) AS B
+    ON ${secondTable}.${columns}=$1
+    WHERE ${secondTable}.${columns}=$1`;
     try {
       const response = await this.pool.query(query, values);
       return response;

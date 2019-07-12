@@ -8,5 +8,5 @@ const busIdSchema = Joi.object({
 });
 
 export default {
-  '/:bus_id': busIdSchema,
+  '/buses/:bus_id': busIdSchema,
 };

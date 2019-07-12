@@ -4,6 +4,7 @@ import cors from 'cors';
 import userRoute from './src/routes/user.route';
 import tripRoute from './src/routes/trip.route';
 import busRoute from './src/routes/bus.route';
+import bookingRoute from './src/routes/booking.route';
 
 const app = express();
 const API_VERSION = '/api/v1';
@@ -17,9 +18,10 @@ app.use(
     extended: false,
   }),
 );
-app.use(`${API_VERSION}/users`, userRoute);
-app.use(`${API_VERSION}/trips`, tripRoute);
-app.use(`${API_VERSION}/buses`, busRoute);
+app.use(`${API_VERSION}`, userRoute);
+app.use(`${API_VERSION}`, tripRoute);
+app.use(`${API_VERSION}`, busRoute);
+app.use(`${API_VERSION}`, bookingRoute);
 
 
 app.use('*', (req, res) => {

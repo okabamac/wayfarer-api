@@ -13,7 +13,7 @@ class Bus extends Query {
 
   async findAllBuses() {
     try {
-      const { rows } = await this.findAll();
+      const { rows } = await this.findAll('*');
       return rows;
     } catch (err) {
       throw err;
