@@ -35,6 +35,20 @@ export default class Query {
   }
 
   /**
+   * Find and modify a document
+   * @param {param}
+   */
+  async modify(param) {
+    const query = `UPDATE ${this.table} SET status=$1 WHERE trip_id=$2 RETURNING *`;
+    try {
+      const response = await this.pool.query(query, param);
+      return response;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  /**
    * Delete a document by parameters
    * @param {param}
    */

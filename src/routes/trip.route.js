@@ -10,6 +10,7 @@ const router = Router();
 
 router
   .post('/trips', [auth.authenticate, auth.isAdmin, bodyValidation], tripCtrl.addTrip)
-  .get('/trips', [auth.authenticate, paramValidation, bodyValidation], tripCtrl.getAll);
+  .get('/trips', [auth.authenticate, paramValidation, bodyValidation], tripCtrl.getAll)
+  .patch('/trips/:trip_id', [auth.authenticate, auth.isAdmin, paramValidation], tripCtrl.modifyTrip);
 
 export default router;

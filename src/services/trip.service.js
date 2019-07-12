@@ -35,6 +35,16 @@ class TripService {
       throw err;
     }
   }
+
+  static async modifyOneTrip(req) {
+    try {
+      const modifiedTrip = await Trip.modifyTheTrip(req);
+      if (!modifiedTrip) throw new Error('This trip doesn\'t exist');
+      return modifiedTrip;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 export default TripService;
