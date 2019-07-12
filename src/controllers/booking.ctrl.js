@@ -19,7 +19,6 @@ class BookingController {
       }
       return response.sendError(res, 500, 'Something went wrong');
     } catch (err) {
-      if (err.constraint === 'pk_booking_id') return response.sendError(res, 400, 'Sorry, you can\'t book more than once on the same trip');
       return response.sendError(res, 400, err.message);
     }
   }

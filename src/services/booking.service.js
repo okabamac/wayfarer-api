@@ -38,6 +38,7 @@ class Bookingservice {
       const newBooking = await Booking.makeABooking(req.body, req.user_id);
       return newBooking;
     } catch (err) {
+      if (err.constraint === 'pk_booking_id') throw new Error("Sorry, you can't book more than once on the same trip");
       throw err;
     }
   }
