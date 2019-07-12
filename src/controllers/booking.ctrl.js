@@ -34,6 +34,18 @@ class BookingController {
       return response.sendError(res, 400, err.message);
     }
   }
+
+  static async deleteABooking(req, res) {
+    try {
+      const deletedBooking = await BookingService.deleteBooking(req);
+      if (deletedBooking) {
+        return response.sendSuccess(res, 200, deletedBooking, 'Booking deleted successfully');
+      }
+      return response.sendError(res, 500, 'Something went wrong');
+    } catch (err) {
+      return response.sendError(res, 400, err.message);
+    }
+  }
 }
 
 export default BookingController;

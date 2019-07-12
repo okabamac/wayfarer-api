@@ -54,6 +54,16 @@ class Bookingservice {
       throw err;
     }
   }
+
+  static async deleteBooking(req) {
+    try {
+      const booking = await Booking.findBookingToDelete(req);
+      if (!booking) throw new Error('You don\'t seem to have access to this booking');
+      return booking;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
 
 export default Bookingservice;

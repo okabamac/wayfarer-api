@@ -35,6 +35,22 @@ export default class Query {
   }
 
   /**
+   * Delete a document by parameters
+   * @param {param}
+   */
+  async deleteByParam(paramType1, paramType2, param) {
+    const query = `DELETE FROM  ${
+      this.table
+    } WHERE ${paramType1}=$1 AND ${paramType2}=$2 RETURNING *`;
+    try {
+      const response = await this.pool.query(query, param);
+      return response;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  /**
    * Find a specific document by multiple params
    * @param {param}
    */

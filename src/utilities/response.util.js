@@ -1,3 +1,5 @@
+// Timicodes helped me understand how to create a response for the controller during bootcamp
+
 import General from './general.util';
 
 /**
@@ -22,7 +24,6 @@ class ResponseGenerator {
     this.data = data;
     this.type = 'success';
     this.message = message;
-
     return this.send(res);
   }
 
@@ -48,6 +49,7 @@ class ResponseGenerator {
   send(res) {
     const filteredResponse = General.stripNull({
       status: this.status,
+      message: this.message,
       data: this.data,
     });
 
