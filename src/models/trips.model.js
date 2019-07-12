@@ -5,7 +5,7 @@ class Trip extends Query {
   async findTripByParam(param_type, param) {
     try {
       const { rows } = await this.findByOneParam(param_type, [param]);
-      return rows[0];
+      return rows;
     } catch (err) {
       throw err;
     }
