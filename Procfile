@@ -1,0 +1,1 @@
+web: npm run prepareDB && npm run start
