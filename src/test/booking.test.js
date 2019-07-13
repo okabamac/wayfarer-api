@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import chai from 'chai';
 
 import chaiHttp from 'chai-http';
@@ -9,6 +10,7 @@ chai.should();
 
 let userToken;
 let adminToken;
+let new_trip_id;
 const newUser = {
   email: 'jerrylaw@gmail.com',
   first_name: 'Jerry',
@@ -216,7 +218,7 @@ describe('Test the booking endpoint', () => {
           res.body.should.be.a('object');
           res.body.should.have
             .property('error')
-            .eql('This seat number doesn\'t exist, choose between 1-1');
+            .eql('No more available seats on this trip');
           done();
         });
     });
@@ -267,6 +269,75 @@ describe('Test the booking endpoint', () => {
           res.body.should.have
             .property('error')
             .eql('You don\'t seem to have access to this booking');
+          done();
+        });
+    });
+    it('it should create a new trip', (done) => {
+      const newTrip = {
+        bus_id: '1',
+        departure_time: '8pm',
+        origin: 'Ibadan',
+        destination: 'Okuku',
+        trip_date: '12-06-2018',
+        fare: '12.666',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/trips')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .send(newTrip)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.data.should.have.property('trip_id');
+          res.body.data.should.have.property('bus_id');
+          res.body.data.should.have.property('fare');
+          res.body.data.should.have.property('trip_date');
+          res.body.data.should.have.property('bus_capacity');
+          res.body.data.should.have.property('origin');
+          res.body.data.should.have.property('destination');
+          res.body.data.should.have.property('status');
+          res.body.data.should.have.property('created_by');
+          res.body.data.should.have.property('departure_time');
+          done();
+        });
+    });
+    it('it should get the created trip id and store it', (done) => {
+      chai
+        .request(app)
+        .get('/api/v1/trips/?destination=Okuku')
+        .set('Authorization', `Bearer ${adminToken}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.data[0].should.have.property('trip_id');
+          new_trip_id = res.body.data[0].trip_id;
+          done();
+        });
+    });
+    it('it should book a seat', (done) => {
+      const booking = {
+        trip_id: new_trip_id,
+        seat_number: '5',
+      };
+      chai
+        .request(app)
+        .post('/api/v1/bookings')
+        .set('Authorization', `Bearer ${userToken}`)
+        .send(booking)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.data.should.have.property('booking_id');
+          res.body.data.should.have.property('user_id');
+          res.body.data.should.have.property('trip_id');
+          res.body.data.should.have.property('bus_id');
+          res.body.data.should.have.property('trip_date');
+          res.body.data.should.have.property('created_on');
+          res.body.data.should.have.property('departure_time');
+          res.body.data.should.have.property('first_name');
+          res.body.data.should.have.property('last_name');
+          res.body.data.should.have.property('email');
           done();
         });
     });
