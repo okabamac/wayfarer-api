@@ -7,7 +7,7 @@ import app from '../../app';
 chai.use(chaiHttp);
 chai.should();
 
-
+let token;
 const newUser = {
   email: 'okabamac@gmail.com',
   first_name: 'Mac',
@@ -242,6 +242,7 @@ describe('Test user signup and login', () => {
             .property('last_name');
           res.body.data.should.have
             .property('token');
+          token = res.body.token;
           done();
         });
     });
@@ -298,6 +299,16 @@ describe('Test user signup and login', () => {
             .eql(
               'Failed to decode param: /api/v1/auth/%%%%...',
             );
+          done();
+        });
+    });
+    it('it should get a 200 response for swagger docs', (done) => {
+      chai
+        .request(app)
+        .post('/api-docs')
+        .set('Authorization', `Bearer ${token}`)
+        .end((err, res) => {
+          res.should.have.status(200);
           done();
         });
     });
