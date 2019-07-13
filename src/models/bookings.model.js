@@ -9,10 +9,8 @@ class Booking extends Query {
 
     try {
       const { rows } = await this.insertWithSelect(
-        'user_id, trip_id, bus_id, trip_date, departure_time, seat_number, created_on, first_name, last_name, email',
-        `${id}, ${req.trip_id}, ${req.bus_id}, '${formatted_date}', '${
-          req.departure_time
-        }', ${req.seat_number}, NOW()`,
+        'user_id, trip_id, bus_id, trip_date, created_on, first_name, last_name, email',
+        `${id}, ${req.trip_id}, ${req.bus_id}, '${formatted_date}', NOW()`,
         'first_name, last_name, email',
         'users',
         'user_id',

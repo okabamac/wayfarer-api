@@ -54,10 +54,10 @@ class Trip extends Query {
 
     try {
       const { rows } = await this.insertWithSelect(
-        'bus_id, origin, destination, fare, trip_date, departure_time, status, created_by, bus_capacity',
+        'bus_id, origin, destination, fare, trip_date, status, created_by, bus_capacity',
         `${req.bus_id}, '${req.origin}', '${req.destination}', ${
           req.fare
-        }, '${formatted_date}', '${req.departure_time}', '${
+        }, '${formatted_date}', '${
           req.status
         }', ${user_id}`,
         'capacity',

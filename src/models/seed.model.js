@@ -20,14 +20,14 @@ const tableSeeds = `
   INSERT INTO
     trips
       VALUES 
-      ( default, 1, 'Ogun', 'Oyo', 2010.033, NOW(), '4pm', 'active', 1, 18),
-      ( default, 2, 'Ogoja', 'Calabar', 123.00, NOW(), '6pm', 'cancelled', 1, 20),
-      ( default, 3, 'Ogoja', 'Calabar', 123.00, NOW(), '6pm', 'active', 1, 1);
+      ( default, 1, 'Ogun', 'Oyo', 2010.033, NOW(), 'active', 1, 18),
+      ( default, 2, 'Ogoja', 'Calabar', 123.00, NOW(), 'cancelled', 1, 20),
+      ( default, 3, 'Ogoja', 'Calabar', 123.00, NOW(), 'active', 1, 1);
 INSERT INTO
     bookings
       VALUES 
-      ( default, 2, 1, 1, NOW(), '6pm', 12, NOW(), 'Joey', 'King', 'jj06@gmail.com'),
-      ( default, 1, 3, 3, NOW(), '6pm', 1, NOW(), 'Mac', 'Okaba', 'markokaba99@gmail.com');
+      ( default, 2, 1, 1, NOW(), default, NOW(), 'Joey', 'King', 'jj06@gmail.com'),
+      ( default, 1, 3, 3, NOW(), default, NOW(), 'Mac', 'Okaba', 'markokaba99@gmail.com');
 `;
 
 dotenv.config();

@@ -23,13 +23,6 @@ class Bookingservice {
       if (foundBooking.length === foundBooking[0].bus_capacity) {
         throw new Error('No more available seats on this trip');
       }
-      if (req.body.seat_number > foundBooking[0].bus_capacity) {
-        throw new Error(
-          `This seat number doesn't exist, choose between 1-${
-            foundBooking[0].bus_capacity
-          }`,
-        );
-      }
       foundBooking.map((booking) => {
         if (booking.seat_number === req.body.seat_number) {
           throw new Error('This seat has been booked');
