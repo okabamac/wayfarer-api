@@ -29,6 +29,20 @@ class TripService {
 
   static async getAllTrips(req) {
     try {
+      if (req.query.origin) {
+        const queryTrip = await Trip.findTripByParam('origin', req.query.origin);
+        if (!queryTrip[0]) {
+          throw new Error('No available results for your search');
+        }
+        return queryTrip;
+      }
+      if (req.query.destination) {
+        const queryTrip = await Trip.findTripByParam('destination', req.query.destination);
+        if (!queryTrip[0]) {
+          throw new Error('No available results for your search');
+        }
+        return queryTrip;
+      }
       const allTrips = await Trip.findAllTrips();
       return allTrips;
     } catch (err) {

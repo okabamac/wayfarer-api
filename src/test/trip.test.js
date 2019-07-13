@@ -415,6 +415,60 @@ describe('Test for trips creation and get', () => {
           done();
         });
     });
+    it('it should get all trips by origin', (done) => {
+      chai
+        .request(app)
+        .get('/api/v1/trips/?origin=Ogoja')
+        .set('Authorization', `Bearer ${userToken}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('data');
+          done();
+        });
+    });
+    it('it should get all trips by destination', (done) => {
+      chai
+        .request(app)
+        .get('/api/v1/trips/?destination=Calabar')
+        .set('Authorization', `Bearer ${userToken}`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('data');
+          done();
+        });
+    });
+    it('it should not get trip because of wwrong origin', (done) => {
+      chai
+        .request(app)
+        .get('/api/v1/trips/?origin=Cabar')
+        .set('Authorization', `Bearer ${userToken}`)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('error')
+            .eql('No available results for your search');
+          done();
+        });
+    });
+    it('it should not get trip because of wwrong destination', (done) => {
+      chai
+        .request(app)
+        .get('/api/v1/trips/?destination=Cabar')
+        .set('Authorization', `Bearer ${userToken}`)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('error')
+            .eql('No available results for your search');
+          done();
+        });
+    });
     it('Admin should be able to cancel a trip', (done) => {
       chai
         .request(app)

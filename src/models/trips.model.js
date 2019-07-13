@@ -2,10 +2,10 @@
 import Query from '../utilities/psql.util';
 
 class Trip extends Query {
-  async findTripById(id_type, id) {
+  async findTripByParam(param_type, param) {
     try {
-      const { rows } = await this.findByOneParam(id_type, id);
-      return rows[0];
+      const { rows } = await this.findByOneParam(param_type, [param]);
+      return rows;
     } catch (err) {
       throw err;
     }
