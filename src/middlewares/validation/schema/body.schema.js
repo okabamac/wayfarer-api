@@ -24,27 +24,8 @@ const createUserSchema = Joi.object({
   last_name: string.required(),
   email,
   password,
-  confirm_password: Joi.string()
-    .valid(Joi.ref('password'))
-    .required()
-    .strict()
-    .error(new Error('Your password and confirm password do not match')),
 });
 
-const createAdminSchema = Joi.object({
-  first_name: string.required(),
-  last_name: string.required(),
-  email,
-  password,
-  confirm_password: Joi.string()
-    .valid(Joi.ref('password'))
-    .required()
-    .strict()
-    .error(new Error('Your password and confirm password do not match')),
-  is_admin: Joi.boolean().default(true, {
-    invalid: true,
-  }),
-});
 const signinUserSchema = Joi.object({
   email,
   password,
@@ -61,8 +42,6 @@ const createTripSchema = Joi.object({
   status: string.valid('active', 'cancelled').default('active', {
     invalid: true,
   }),
-  departure_time: Joi.string().error(new Error('departure_time is required and must be a string'))
-    .required(),
 });
 const addBusSchema = Joi.object({
   number_plate: Joi.string()
@@ -87,7 +66,6 @@ const addBusSchema = Joi.object({
 
 const makeBookingSchema = Joi.object({
   trip_id: id.error(new Error('trip_id is required and must be an integer')),
-  seat_number: id.error(new Error('seat_number is required and must be an integer')),
 });
 
 export default {

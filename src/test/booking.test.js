@@ -16,7 +16,6 @@ const newUser = {
   first_name: 'Jerry',
   last_name: 'Law',
   password: 'password',
-  confirm_password: 'password',
   is_admin: false,
 };
 
@@ -79,8 +78,7 @@ describe('Test the booking endpoint', () => {
     });
     it('it should book a seat', (done) => {
       const booking = {
-        trip_id: 1,
-        seat_number: '5',
+        trip_id: 1
       };
       chai
         .request(app)
@@ -96,7 +94,6 @@ describe('Test the booking endpoint', () => {
           res.body.data.should.have.property('bus_id');
           res.body.data.should.have.property('trip_date');
           res.body.data.should.have.property('created_on');
-          res.body.data.should.have.property('departure_time');
           res.body.data.should.have.property('first_name');
           res.body.data.should.have.property('last_name');
           res.body.data.should.have.property('email');
@@ -105,7 +102,6 @@ describe('Test the booking endpoint', () => {
     });
     it('it should throw error because of missing trip id', (done) => {
       const booking = {
-        seat_number: '5',
       };
       chai
         .request(app)
@@ -119,26 +115,9 @@ describe('Test the booking endpoint', () => {
           done();
         });
     });
-    it('it should throw error because of missing seat number', (done) => {
-      const booking = {
-        trip_id: 1,
-      };
-      chai
-        .request(app)
-        .post('/api/v1/bookings')
-        .set('Authorization', `Bearer ${userToken}`)
-        .send(booking)
-        .end((err, res) => {
-          res.should.have.status(400);
-          res.body.should.be.a('object');
-          res.body.should.have.property('error').eql('seat_number is required and must be an integer');
-          done();
-        });
-    });
     it('it should throw error because trip is cancelled', (done) => {
       const booking = {
         trip_id: 2,
-        seat_number: '5',
       };
       chai
         .request(app)
@@ -152,27 +131,9 @@ describe('Test the booking endpoint', () => {
           done();
         });
     });
-    it('it should throw error because seat has been booked', (done) => {
-      const booking = {
-        trip_id: 1,
-        seat_number: '5',
-      };
-      chai
-        .request(app)
-        .post('/api/v1/bookings')
-        .set('Authorization', `Bearer ${userToken}`)
-        .send(booking)
-        .end((err, res) => {
-          res.should.have.status(400);
-          res.body.should.be.a('object');
-          res.body.should.have.property('error').eql('This seat has been booked');
-          done();
-        });
-    });
     it('it should throw error because of invalid trip', (done) => {
       const booking = {
-        trip_id: 16,
-        seat_number: '6',
+        trip_id: 16
       };
       chai
         .request(app)
@@ -186,27 +147,9 @@ describe('Test the booking endpoint', () => {
           done();
         });
     });
-    it('it should throw error because of invalid seat number', (done) => {
-      const booking = {
-        trip_id: 1,
-        seat_number: '20',
-      };
-      chai
-        .request(app)
-        .post('/api/v1/bookings')
-        .set('Authorization', `Bearer ${userToken}`)
-        .send(booking)
-        .end((err, res) => {
-          res.should.have.status(400);
-          res.body.should.be.a('object');
-          res.body.should.have.property('error').eql('This seat number doesn\'t exist, choose between 1-18');
-          done();
-        });
-    });
     it('it should throw error because of no more seats', (done) => {
       const booking = {
         trip_id: 3,
-        seat_number: '2',
       };
       chai
         .request(app)
@@ -275,7 +218,6 @@ describe('Test the booking endpoint', () => {
     it('it should create a new trip', (done) => {
       const newTrip = {
         bus_id: '1',
-        departure_time: '8pm',
         origin: 'Ibadan',
         destination: 'Okuku',
         trip_date: '12-06-2018',
@@ -298,7 +240,6 @@ describe('Test the booking endpoint', () => {
           res.body.data.should.have.property('destination');
           res.body.data.should.have.property('status');
           res.body.data.should.have.property('created_by');
-          res.body.data.should.have.property('departure_time');
           done();
         });
     });
@@ -318,7 +259,6 @@ describe('Test the booking endpoint', () => {
     it('it should book a seat', (done) => {
       const booking = {
         trip_id: new_trip_id,
-        seat_number: '5',
       };
       chai
         .request(app)
@@ -334,7 +274,6 @@ describe('Test the booking endpoint', () => {
           res.body.data.should.have.property('bus_id');
           res.body.data.should.have.property('trip_date');
           res.body.data.should.have.property('created_on');
-          res.body.data.should.have.property('departure_time');
           res.body.data.should.have.property('first_name');
           res.body.data.should.have.property('last_name');
           res.body.data.should.have.property('email');

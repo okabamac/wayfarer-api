@@ -13,7 +13,6 @@ const newUser = {
   first_name: 'Mac',
   last_name: 'Okaba',
   password: 'password',
-  confirm_password: 'password',
   is_admin: false,
 };
 
@@ -84,7 +83,6 @@ describe('Test user signup and login', () => {
         email: 'okabamac@gmail.com',
         last_name: 'Okaba',
         password: 'password',
-        confirm_password: 'password',
         is_admin: false,
       };
       chai
@@ -103,7 +101,6 @@ describe('Test user signup and login', () => {
         email: 'okabamac@gmail.com',
         first_name: 'Okaba',
         password: 'password',
-        confirm_password: 'password',
         is_admin: false,
       };
       chai
@@ -122,7 +119,6 @@ describe('Test user signup and login', () => {
         first_name: 'Mac',
         last_name: 'Okaba',
         password: 'password',
-        confirm_password: 'password',
         is_admin: false,
       };
       chai
@@ -142,7 +138,6 @@ describe('Test user signup and login', () => {
         first_name: 'Mac',
         last_name: 'Okaba',
         password: 'password',
-        confirm_password: 'password',
         is_admin: false,
       };
       chai
@@ -164,7 +159,6 @@ describe('Test user signup and login', () => {
         first_name: 'Mac',
         last_name: 'Okaba',
         password: 'pass',
-        confirm_password: 'pass',
         is_admin: false,
       };
       chai
@@ -179,46 +173,6 @@ describe('Test user signup and login', () => {
             .eql(
               'password length must be at least 6 characters long',
             );
-          done();
-        });
-    });
-    it('it should throw error because of missing password', (done) => {
-      const badRequest = {
-        first_name: 'Mac',
-        last_name: 'Okaba',
-        confirm_password: 'password',
-        is_admin: false,
-      };
-      chai
-        .request(app)
-        .post('/api/v1/auth/signup')
-        .send(badRequest)
-        .end((err, res) => {
-          res.should.have.status(400);
-          res.body.should.be.a('object');
-          res.body.should.have
-            .property('error')
-            .eql('Your password and confirm password do not match');
-          done();
-        });
-    });
-    it('it should throw error because of missing confirm password', (done) => {
-      const badRequest = {
-        first_name: 'Mac',
-        last_name: 'Okaba',
-        password: 'password',
-        is_admin: false,
-      };
-      chai
-        .request(app)
-        .post('/api/v1/auth/signup')
-        .send(badRequest)
-        .end((err, res) => {
-          res.should.have.status(400);
-          res.body.should.be.a('object');
-          res.body.should.have
-            .property('error')
-            .eql('Your password and confirm password do not match');
           done();
         });
     });

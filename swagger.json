@@ -398,10 +398,6 @@
 				"trip_id": {
 					"type": "integer",
 					"format": "int32"
-				},
-				"seat_number": {
-					"type": "integer",
-					"format": "int32"
 				}
 			},
 			"xml": {
@@ -421,9 +417,6 @@
 					"type": "string"
 				},
 				"password": {
-					"type": "string"
-				},
-				"confirm_password": {
 					"type": "string"
 				}
 			},
@@ -451,9 +444,6 @@
 				"trip_date": {
 					"type": "string",
 					"format": "date-time"
-				},
-				"departure_time": {
-					"type": "string"
 				}
 			},
 			"xml": {
