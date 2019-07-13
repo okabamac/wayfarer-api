@@ -129,11 +129,13 @@ export default class Query {
    * @param {bodyObject}
    */
   async findTripBooking(columns, secondTable, values) {
-    const query = `SELECT *
-    FROM ${secondTable}
-    LEFT JOIN (SELECT seat_number FROM ${this.table}) AS B
-    ON ${secondTable}.${columns}=$1
-    WHERE ${secondTable}.${columns}=$1`;
+    const query = `SELECT 
+          *
+        FROM
+          ${secondTable} AS v1
+        LEFT JOIN 
+          ${this.table} ON ${this.table}.${columns} = v1.${columns}
+        WHERE v1.${columns}=$1`;
     try {
       const response = await this.pool.query(query, values);
       return response;

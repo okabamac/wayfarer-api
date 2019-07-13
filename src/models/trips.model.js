@@ -2,9 +2,9 @@
 import Query from '../utilities/psql.util';
 
 class Trip extends Query {
-  async findTripByParam(param_type, param) {
+  async findTripByParam(paramType, param) {
     try {
-      const { rows } = await this.findByOneParam(param_type, [param]);
+      const { rows } = await this.findByOneParam(paramType, [param]);
       return rows;
     } catch (err) {
       throw err;
@@ -22,7 +22,10 @@ class Trip extends Query {
 
   async modifyTheTrip(req) {
     try {
-      const { rows } = await this.modify(['cancelled', Number(req.params.trip_id)]);
+      const { rows } = await this.modify([
+        'cancelled',
+        Number(req.params.trip_id),
+      ]);
       return rows[0];
     } catch (err) {
       throw err;

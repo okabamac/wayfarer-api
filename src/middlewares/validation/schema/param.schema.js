@@ -16,5 +16,5 @@ const tripIdSchema = Joi.object({
 export default {
   '/buses/:bus_id': busIdSchema,
   '/bookings/:booking_id': bookingIdSchema,
-  '/tripss/:trip_id': tripIdSchema,
+  '/trips/:trip_id': tripIdSchema,
 };

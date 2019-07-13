@@ -30,14 +30,20 @@ class TripService {
   static async getAllTrips(req) {
     try {
       if (req.query.origin) {
-        const queryTrip = await Trip.findTripByParam('origin', req.query.origin);
+        const queryTrip = await Trip.findTripByParam(
+          'origin',
+          req.query.origin,
+        );
         if (!queryTrip[0]) {
           throw new Error('No available results for your search');
         }
         return queryTrip;
       }
       if (req.query.destination) {
-        const queryTrip = await Trip.findTripByParam('destination', req.query.destination);
+        const queryTrip = await Trip.findTripByParam(
+          'destination',
+          req.query.destination,
+        );
         if (!queryTrip[0]) {
           throw new Error('No available results for your search');
         }
@@ -53,7 +59,17 @@ class TripService {
   static async modifyOneTrip(req) {
     try {
       const modifiedTrip = await Trip.modifyTheTrip(req);
-      if (!modifiedTrip) throw new Error('This trip doesn\'t exist');
+      if (!modifiedTrip) throw new Error("This trip doesn't exist");
+      return modifiedTrip;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async getOneTrip(req) {
+    try {
+      const modifiedTrip = await Trip.findTripById(req.params.trip_id);
+      if (!modifiedTrip) throw new Error("This trip doesn't exist");
       return modifiedTrip;
     } catch (err) {
       throw err;

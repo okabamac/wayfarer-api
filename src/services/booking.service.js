@@ -1,7 +1,9 @@
 /* eslint-disable camelcase */
 import BookingModel from '../models/bookings.model';
+import TripModel from '../models/trips.model';
 
 const Booking = new BookingModel('bookings');
+const Trip = new TripModel('trips');
 
 class Bookingservice {
   /** Add booking to the db
@@ -33,6 +35,16 @@ class Bookingservice {
           throw new Error('This seat has been booked');
         }
       });
+      if (!foundBooking[0].trip_date) {
+        const findTrip = await Trip.findTripByParam('trip_id', req.body.trip_id);
+        req.body.trip_date = findTrip[0].trip_date;
+        req.body.bus_id = findTrip[0].bus_id;
+        const newBooking = await Booking.makeABooking(
+          req.body,
+          req.user_id,
+        );
+        return newBooking;
+      }
       req.body.trip_date = foundBooking[0].trip_date;
       req.body.bus_id = foundBooking[0].bus_id;
       const newBooking = await Booking.makeABooking(req.body, req.user_id);
