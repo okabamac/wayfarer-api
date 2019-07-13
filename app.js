@@ -1,10 +1,12 @@
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
 import userRoute from './src/routes/user.route';
 import tripRoute from './src/routes/trip.route';
 import busRoute from './src/routes/bus.route';
 import bookingRoute from './src/routes/booking.route';
+import swaggerDocument from './swagger.json';
 
 const app = express();
 const API_VERSION = '/api/v1';
@@ -22,6 +24,7 @@ app.use(`${API_VERSION}`, userRoute);
 app.use(`${API_VERSION}`, tripRoute);
 app.use(`${API_VERSION}`, busRoute);
 app.use(`${API_VERSION}`, bookingRoute);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 app.use('*', (req, res) => {
