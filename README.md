@@ -24,6 +24,11 @@ To run this application, you should have the following:
 ## Installation
 The following commands enables you run the app:
 - clone the repo: RUN THE COMMAND
+## Deployments
+This application was deployed to the following:
+- [Heroku](https://wayfarer-bus-api.herokuapp.com/) : For API endpoints.
+- [Pivotal Tracker](https://www.pivotaltracker.com/n/projects/2359702) : Pivot Tracker stories
+- [Swagger Documentation](https://wayfarer-bus-api.herokuapp.com/api-docs/) : Swagger Documentation
 ```
 >> git clone https://github.com/okabamac/wayfarer-api.git
 ```
@@ -66,6 +71,7 @@ The test covers all the endpoints and requests sent to them.
 | POST     | User's Sign in                               | `/api/v1/auth/signin`                           |
 | POST     | Admin create trip                            | `/api/v1/v1/trips`                              |
 | GET      |    Get all trips                               | `/api/v1/trips`                               |
+| GET      |    Get trip by ID                               | `/api/v1/trips/:trip_id`                               |
 | GET       |   Get trips by destination                    | `/ap/v1/trips/?destination=Ogoja`             |
 | GET       |   Get trips by origin                   | `/ap/v1/trips/?origin=Calabar`             |
 | POST       |   Register a bus                   | `/ap/v1/buses`             |
