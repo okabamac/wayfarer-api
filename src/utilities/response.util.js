@@ -19,11 +19,10 @@ class ResponseGenerator {
    * @param {object} data
    * @param{string} message
    */
-  sendSuccess(res, statusCode, data, message) {
+  sendSuccess(res, statusCode, data) {
     this.status = statusCode;
     this.data = data;
     this.type = 'success';
-    this.message = message;
     return this.send(res);
   }
 

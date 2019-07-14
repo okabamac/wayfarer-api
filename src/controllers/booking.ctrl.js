@@ -39,7 +39,8 @@ class BookingController {
     try {
       const deletedBooking = await BookingService.deleteBooking(req);
       if (deletedBooking) {
-        return response.sendSuccess(res, 200, deletedBooking, 'Booking deleted successfully');
+        deletedBooking.message = 'Booking deleted successfully';
+        return response.sendSuccess(res, 200, deletedBooking);
       }
       return response.sendError(res, 500, 'Something went wrong');
     } catch (err) {

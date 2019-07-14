@@ -195,7 +195,7 @@ describe('Test the booking endpoint', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.should.have.a
+          res.body.data.should.have.a
             .property('message')
             .eql('Booking deleted successfully');
           done();
