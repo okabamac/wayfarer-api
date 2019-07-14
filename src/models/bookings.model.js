@@ -9,8 +9,8 @@ class Booking extends Query {
 
     try {
       const { rows } = await this.insertWithSelect(
-        'user_id, trip_id, bus_id, trip_date, created_on, first_name, last_name, email',
-        `${id}, ${req.trip_id}, ${req.bus_id}, '${formatted_date}', NOW()`,
+        'user_id, trip_id, bus_id, trip_date, seat_number, created_on, first_name, last_name, email',
+        `${id}, ${req.trip_id}, ${req.bus_id}, '${formatted_date}', ${req.seat_number}, NOW()`,
         'first_name, last_name, email',
         'users',
         'user_id',
@@ -24,7 +24,7 @@ class Booking extends Query {
 
   async findBooking(req) {
     try {
-      const { rows } = await this.findTripBooking('trip_id', 'trips', [
+      const { rows } = await this.findTripBooking('id', 'trip_id', 'trips', [
         req.trip_id,
       ]);
       return rows;
@@ -53,7 +53,7 @@ class Booking extends Query {
 
   async findBookingToDelete(req) {
     try {
-      const { rows } = await this.deleteByParam('booking_id', 'user_id', [Number(req.params.booking_id), req.user_id]);
+      const { rows } = await this.deleteByParam('id', 'user_id', [Number(req.params.booking_id), req.user_id]);
       return rows[0];
     } catch (err) {
       throw err;

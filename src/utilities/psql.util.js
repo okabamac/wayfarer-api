@@ -39,7 +39,7 @@ export default class Query {
    * @param {param}
    */
   async modify(param) {
-    const query = `UPDATE ${this.table} SET status=$1 WHERE trip_id=$2 RETURNING *`;
+    const query = `UPDATE ${this.table} SET status=$1 WHERE id=$2 RETURNING *`;
     try {
       const response = await this.pool.query(query, param);
       return response;
@@ -115,7 +115,7 @@ export default class Query {
       const response = await this.pool.query(query);
       return response;
     } catch (err) {
-      if (err.constraint === 'pk_booking_id') {
+      if (err.constraint === 'pk_bookings_id') {
         throw new Error(
           "Sorry, you can't book more than once on the same trip",
         );
@@ -128,14 +128,14 @@ export default class Query {
    * Insert into db
    * @param {bodyObject}
    */
-  async findTripBooking(columns, secondTable, values) {
+  async findTripBooking(column1, column2, secondTable, values) {
     const query = `SELECT 
           *
         FROM
           ${secondTable} AS v1
         LEFT JOIN 
-          ${this.table} ON ${this.table}.${columns} = v1.${columns}
-        WHERE v1.${columns}=$1`;
+          ${this.table} ON ${this.table}.${column2} = v1.${column1}
+        WHERE v1.${column1}=$1`;
     try {
       const response = await this.pool.query(query, values);
       return response;

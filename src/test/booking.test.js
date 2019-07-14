@@ -78,7 +78,7 @@ describe('Test the booking endpoint', () => {
     });
     it('it should book a seat', (done) => {
       const booking = {
-        trip_id: 1
+        trip_id: 1,
       };
       chai
         .request(app)
@@ -88,7 +88,7 @@ describe('Test the booking endpoint', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.data.should.have.property('booking_id');
+          res.body.data.should.have.property('id');
           res.body.data.should.have.property('user_id');
           res.body.data.should.have.property('trip_id');
           res.body.data.should.have.property('bus_id');
@@ -133,7 +133,7 @@ describe('Test the booking endpoint', () => {
     });
     it('it should throw error because of invalid trip', (done) => {
       const booking = {
-        trip_id: 16
+        trip_id: 16,
       };
       chai
         .request(app)
@@ -231,7 +231,7 @@ describe('Test the booking endpoint', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.data.should.have.property('trip_id');
+          res.body.data.should.have.property('id');
           res.body.data.should.have.property('bus_id');
           res.body.data.should.have.property('fare');
           res.body.data.should.have.property('trip_date');
@@ -251,8 +251,8 @@ describe('Test the booking endpoint', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.data[0].should.have.property('trip_id');
-          new_trip_id = res.body.data[0].trip_id;
+          res.body.data[0].should.have.property('id');
+          new_trip_id = res.body.data[0].id;
           done();
         });
     });
@@ -268,7 +268,7 @@ describe('Test the booking endpoint', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.data.should.have.property('booking_id');
+          res.body.data.should.have.property('id');
           res.body.data.should.have.property('user_id');
           res.body.data.should.have.property('trip_id');
           res.body.data.should.have.property('bus_id');
