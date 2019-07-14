@@ -24,7 +24,7 @@ app.use(`${API_VERSION}`, userRoute);
 app.use(`${API_VERSION}`, tripRoute);
 app.use(`${API_VERSION}`, busRoute);
 app.use(`${API_VERSION}`, bookingRoute);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 app.use('*', (req, res) => {
