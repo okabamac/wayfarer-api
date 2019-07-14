@@ -29,9 +29,10 @@ class Bookingservice {
         }
       });
       if (!foundBooking[0].trip_date) {
-        const findTrip = await Trip.findTripByParam('trip_id', req.body.trip_id);
+        const findTrip = await Trip.findTripByParam('id', req.body.trip_id);
         req.body.trip_date = findTrip[0].trip_date;
         req.body.bus_id = findTrip[0].bus_id;
+        req.body.seat_number = 1;
         const newBooking = await Booking.makeABooking(
           req.body,
           req.user_id,
@@ -40,6 +41,7 @@ class Bookingservice {
       }
       req.body.trip_date = foundBooking[0].trip_date;
       req.body.bus_id = foundBooking[0].bus_id;
+      req.body.seat_number = foundBooking.length + 1;
       const newBooking = await Booking.makeABooking(req.body, req.user_id);
       return newBooking;
     } catch (err) {

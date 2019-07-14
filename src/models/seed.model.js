@@ -26,8 +26,8 @@ const tableSeeds = `
 INSERT INTO
     bookings
       VALUES 
-      ( default, 2, 1, 1, NOW(), default, NOW(), 'Joey', 'King', 'jj06@gmail.com'),
-      ( default, 1, 3, 3, NOW(), default, NOW(), 'Mac', 'Okaba', 'markokaba99@gmail.com');
+      ( default, 2, 1, 1, NOW(), 1, NOW(), 'Joey', 'King', 'jj06@gmail.com'),
+      ( default, 1, 3, 3, NOW(), 1, NOW(), 'Mac', 'Okaba', 'markokaba99@gmail.com');
 `;
 
 dotenv.config();

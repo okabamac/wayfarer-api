@@ -72,7 +72,7 @@ describe('Test for trips creation and get', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.data.should.have.property('trip_id');
+          res.body.data.should.have.property('id');
           res.body.data.should.have.property('bus_id');
           res.body.data.should.have.property('fare');
           res.body.data.should.have.property('trip_date');
@@ -445,7 +445,7 @@ describe('Test for trips creation and get', () => {
           res.body.should.have
             .property('message')
             .eql('Trip cancelled successfully');
-          res.body.data.should.have.property('trip_id');
+          res.body.data.should.have.property('id');
           res.body.data.should.have.property('bus_id');
           res.body.data.should.have.property('fare');
           res.body.data.should.have.property('trip_date');
