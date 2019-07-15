@@ -22,7 +22,7 @@ const tableSeeds = `
       VALUES 
       ( default, 1, 'Ogun', 'Oyo', 2010.033, NOW(), 'active', 1, 18),
       ( default, 2, 'Ogoja', 'Calabar', 123.00, NOW(), 'cancelled', 1, 20),
-      ( default, 3, 'Ogoja', 'Calabar', 123.00, NOW(), 'active', 1, 1);
+      ( default, 3, 'Ogoja', 'Calabar', 123.00, NOW(), 'active', 1, 2);
 INSERT INTO
     bookings
       VALUES 

@@ -1,13 +1,11 @@
 /* eslint-disable camelcase */
 import Query from '../utilities/psql.util';
+import GeneralUtils from "../utilities/general.util";
 
 class Booking extends Query {
   async makeABooking(req, id) {
-    const trip_datetime = req.trip_date;
-    const formatted_date = `${trip_datetime.getFullYear()}-${trip_datetime.getMonth()
-      + 1}-${trip_datetime.getDate()} ${trip_datetime.getHours()}:${trip_datetime.getMinutes()}:${trip_datetime.getSeconds()}`;
-
     try {
+      const formatted_date = await GeneralUtils.dateHelper(req.trip_date);
       const { rows } = await this.insertWithSelect(
         'user_id, trip_id, bus_id, trip_date, seat_number, created_on, first_name, last_name, email',
         `${id}, ${req.trip_id}, ${req.bus_id}, '${formatted_date}', ${req.seat_number}, NOW()`,
