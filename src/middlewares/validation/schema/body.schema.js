@@ -58,7 +58,7 @@ const addBusSchema = Joi.object({
     .required(),
   capacity: Joi.number()
     .positive()
-    .min(1)
+    .min(2)
     .precision(0)
     .error(new Error('capacity is required and must be an integer'))
     .required(),

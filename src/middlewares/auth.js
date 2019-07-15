@@ -88,7 +88,6 @@ class Authentication {
       result.message = 'Authorization Denied.';
       return result;
     }
-
     if (payload.exp <= moment().unix()) {
       result.status = 401;
       result.message = 'Token has expired';

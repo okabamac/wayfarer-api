@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import Query from '../utilities/psql.util';
-
+import GeneralUtils from "../utilities/general.util";
 class Trip extends Query {
   async findTripByParam(paramType, param) {
     try {
@@ -48,11 +48,8 @@ class Trip extends Query {
   }
 
   async createANewTrip(req, user_id) {
-    const trip_datetime = req.trip_date;
-    const formatted_date = `${trip_datetime.getFullYear()}-${trip_datetime.getMonth()
-      + 1}-${trip_datetime.getDate()} ${trip_datetime.getHours()}:${trip_datetime.getMinutes()}:${trip_datetime.getSeconds()}`;
-
     try {
+      const formatted_date = await GeneralUtils.dateHelper(req.trip_date);
       const { rows } = await this.insertWithSelect(
         'bus_id, origin, destination, fare, trip_date, status, created_by, bus_capacity',
         `${req.bus_id}, '${req.origin}', '${req.destination}', ${

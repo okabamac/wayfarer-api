@@ -1,6 +1,23 @@
+/* eslint-disable camelcase */
 import bcrypt from 'bcryptjs';
 
 const General = {
+
+  /**
+   * @description - clean date for psql
+   * @param {object}
+   * @returns {object}
+   */
+  dateHelper(date) {
+    try {
+      const trip_datetime = date;
+      const formatted_date = `${trip_datetime.getFullYear()}-${trip_datetime.getMonth()
+        + 1}-${trip_datetime.getDate()} ${trip_datetime.getHours()}:${trip_datetime.getMinutes()}:${trip_datetime.getSeconds()}`;
+      return formatted_date;
+    } catch (err) {
+      throw err;
+    }
+  },
   /**
    * @description - validate password by comparing password with hash password
    * @param {string} password
