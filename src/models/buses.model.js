@@ -2,10 +2,10 @@
 import Query from '../utilities/psql.util';
 
 class Bus extends Query {
-  async findBusById(id) {
+  async findBusByParam(param_Type, param) {
     try {
-      const { rows } = await this.findByOneParam('bus_id', [id]);
-      return rows[0];
+      const { rows } = await this.findByOneParam(param_Type, [param]);
+      return rows;
     } catch (err) {
       throw err;
     }

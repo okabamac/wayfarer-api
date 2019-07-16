@@ -39,8 +39,19 @@ class BookingController {
     try {
       const deletedBooking = await BookingService.deleteBooking(req);
       if (deletedBooking) {
-        deletedBooking.message = 'Booking deleted successfully';
         return response.sendSuccess(res, 200, deletedBooking);
+      }
+      return response.sendError(res, 500, 'Something went wrong');
+    } catch (err) {
+      return response.sendError(res, 400, err.message);
+    }
+  }
+
+  static async changeSeat(req, res) {
+    try {
+      const changedSeatBooking = await BookingService.modifyBookingSeat(req);
+      if (changedSeatBooking) {
+        return response.sendSuccess(res, 200, changedSeatBooking);
       }
       return response.sendError(res, 500, 'Something went wrong');
     } catch (err) {

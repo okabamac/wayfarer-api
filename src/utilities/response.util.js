@@ -48,7 +48,6 @@ class ResponseGenerator {
   send(res) {
     const filteredResponse = General.stripNull({
       status: this.status,
-      message: this.message,
       data: this.data,
     });
 

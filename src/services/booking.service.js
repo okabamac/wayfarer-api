@@ -13,22 +13,24 @@ class Bookingservice {
 
   static async addBooking(req) {
     try {
-      const foundBooking = await Booking.findBooking(req.body);
+      const foundBooking = await Booking.findBooking(req.body.trip_id);
       await Bookingservice.runBookingCheck(foundBooking);
+      // If no booking exist
       if (!foundBooking[0].trip_date) {
         const findTrip = await Trip.findTripByParam('id', req.body.trip_id);
         req.body.trip_date = findTrip[0].trip_date;
         req.body.bus_id = findTrip[0].bus_id;
         req.body.seat_number = 2;
-        const newBooking = await Booking.makeABooking(
-          req.body,
-          req.user_id,
-        );
+        const newBooking = await Booking.makeABooking(req.body, req.user_id);
         return newBooking;
       }
+      // If booking exist
       req.body.trip_date = foundBooking[0].trip_date;
       req.body.bus_id = foundBooking[0].bus_id;
-      req.body.seat_number = await Bookingservice.assignSeat(foundBooking);
+      const seats = await Bookingservice.checkSeat(foundBooking);
+
+      const [assignedSeat] = seats;
+      req.body.seat_number = assignedSeat;
       const newBooking = await Booking.makeABooking(req.body, req.user_id);
       return newBooking;
     } catch (err) {
@@ -42,7 +44,7 @@ class Bookingservice {
         const allBookings = await Booking.findAllBookings();
         return allBookings;
       }
-      const userBookings = await Booking.findBookingByID(req.user_id);
+      const userBookings = await Booking.findBookingByParam('user_id', req.user_id);
       return userBookings;
     } catch (err) {
       throw err;
@@ -52,7 +54,9 @@ class Bookingservice {
   static async deleteBooking(req) {
     try {
       const booking = await Booking.findBookingToDelete(req);
-      if (!booking) throw new Error('You don\'t seem to have access to this booking');
+      if (!booking) throw new Error("You don't seem to have access to this booking");
+
+      booking.message = 'Booking deleted successfully';
       return booking;
     } catch (err) {
       throw err;
@@ -60,18 +64,14 @@ class Bookingservice {
   }
 
   static async runBookingCheck(foundBooking) {
-    if (!foundBooking[0]) {
-      throw new Error('This trip is not available');
-    }
-    if (foundBooking[0].status === 'cancelled') {
-      throw new Error('This trip has been cancelled');
-    }
-    if (foundBooking.length === foundBooking[0].bus_capacity - 1) {
-      throw new Error('No more available seats on this trip');
-    }
+    if (!foundBooking[0]) throw new Error('This trip is not available');
+
+    if (foundBooking[0].status === 'cancelled') throw new Error('This trip has been cancelled');
+
+    if (foundBooking.length === foundBooking[0].bus_capacity - 1) throw new Error('No more available seats on this trip');
   }
 
-  static async assignSeat(bookings) {
+  static async checkSeat(bookings) {
     try {
       const seats = [];
       const bookedSeats = [];
@@ -83,7 +83,29 @@ class Bookingservice {
         bookedSeats.push(booking.seat_number);
       });
       const availableSeats = seats.filter(seat => !bookedSeats.includes(seat));
-      return availableSeats[0];
+      return availableSeats;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  static async modifyBookingSeat(req) {
+    try {
+      const booking = await Booking.findUserBooking(req);
+      if (!booking[0]) throw new Error("You don't seem to have made any booking with that ID");
+
+      const foundBooking = await Booking.findBooking(booking[0].trip_id);
+      const seats = await Bookingservice.checkSeat(foundBooking);
+
+      if (seats.length === 0) throw new Error('Sorry, all the seats are filled');
+      if (req.body.seat_number > foundBooking[0].bus_capacity) throw new Error('Invalid seat number');
+      if (!seats.includes(req.body.seat_number)) throw new Error(`Select from this available seats: [${seats}]`);
+
+      const changedSeat = await Booking.updateSeat(
+        booking[0].id, req.user_id, req.body.seat_number,
+      );
+      changedSeat.message = 'Seat changed successfully';
+      return changedSeat;
     } catch (err) {
       throw err;
     }

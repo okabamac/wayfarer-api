@@ -184,7 +184,7 @@
 				"tags": [
 					"trips"
 				],
-				"summary": "Cancel atrip by ID",
+				"summary": "Cancel a trip by ID",
 				"description": "Returns a single cancelled trip",
 				"operationId": "patchTripById",
 				"produces": [
@@ -381,6 +381,43 @@
 				"security": [{
 					"Bearer": []
 				}]
+			},
+			"put": {
+				"tags": [
+					"bookings"
+				],
+				"summary": "Update a booked seat",
+				"description": "User can update his booking.",
+				"operationId": "updateSeatNumber",
+				"produces": [
+					"application/json",
+					"application/xml"
+				],
+				"parameters": [{
+						"name": "booking_id",
+						"in": "path",
+						"description": "ID of booking to update",
+						"required": true,
+						"type": "integer",
+						"format": "int32"
+					},
+					{
+						"name": "seat_number",
+						"in": "body",
+						"description": "New seat number",
+						"schema": {
+							"$ref": "#/definitions/Booking/properties/seat_number"
+						}
+					}
+				],
+				"responses": {
+					"default": {
+						"description": "successful operation"
+					}
+				},
+				"security": [{
+					"Bearer": []
+				}]
 			}
 		}
 	},
@@ -396,6 +433,10 @@
 			"type": "object",
 			"properties": {
 				"trip_id": {
+					"type": "integer",
+					"format": "int32"
+				},
+				"seat_number": {
 					"type": "integer",
 					"format": "int32"
 				}

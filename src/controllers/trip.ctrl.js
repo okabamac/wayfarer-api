@@ -39,7 +39,6 @@ class TripController {
     try {
       const trip = await TripService.modifyOneTrip(req);
       if (trip) {
-        trip.message = 'Trip cancelled successfully';
         return response.sendSuccess(res, 200, trip);
       }
       return response.sendError(res, 500, 'Something went wrong');

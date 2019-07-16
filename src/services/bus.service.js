@@ -11,10 +11,10 @@ class BusService {
 
   static async addBus(req) {
     try {
-      const foundBus = await Bus.findBusByMultipleParam(req.body, req.user_id);
-      if (foundBus) {
-        throw new Error('This bus is already registered');
-      }
+      const foundBus = await Bus.findBusByMultipleParam(req.body);
+
+      if (foundBus) throw new Error('This bus is already registered');
+
       const newBus = await Bus.addANewBus(req.body, req.user_id);
       return newBus;
     } catch (err) {
@@ -22,7 +22,7 @@ class BusService {
     }
   }
 
-  static async getAllBuses(req) {
+  static async getAllBuses() {
     try {
       const allBuses = await Bus.findAllBuses();
       return allBuses;
@@ -33,11 +33,11 @@ class BusService {
 
   static async getOneBus(req) {
     try {
-      const bus = await Bus.findBusById(req.params.bus_id);
-      if (!bus) {
-        throw new Error('This bus does not exist');
-      }
-      return bus;
+      const bus = await Bus.findBusByParam('bus_id', req.params.bus_id);
+
+      if (!bus[0]) throw new Error('This bus does not exist');
+
+      return bus[0];
     } catch (err) {
       throw err;
     }

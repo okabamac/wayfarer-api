@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import Query from '../utilities/psql.util';
-import GeneralUtils from "../utilities/general.util";
+import GeneralUtils from '../utilities/general.util';
+
 class Trip extends Query {
   async findTripByParam(paramType, param) {
     try {

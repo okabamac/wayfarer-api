@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+/* eslint-env mocha */
 import chai from 'chai';
 
 import chaiHttp from 'chai-http';
@@ -11,6 +12,8 @@ chai.should();
 let userToken;
 let adminToken;
 let new_trip_id;
+let booking_id;
+
 const newUser = {
   email: 'jerrylaw@gmail.com',
   first_name: 'Jerry',
@@ -273,10 +276,54 @@ describe('Test the booking endpoint', () => {
           res.body.data.should.have.property('trip_id');
           res.body.data.should.have.property('bus_id');
           res.body.data.should.have.property('trip_date');
+          res.body.data.should.have.property('seat_number');
           res.body.data.should.have.property('created_on');
           res.body.data.should.have.property('first_name');
           res.body.data.should.have.property('last_name');
           res.body.data.should.have.property('email');
+          booking_id = res.body.data.id;
+          done();
+        });
+    });
+    it('it should change a seat', (done) => {
+      const seatNumber = {
+        seat_number: 3,
+      };
+      chai
+        .request(app)
+        .put(`/api/v1/bookings/${booking_id}`)
+        .set('Authorization', `Bearer ${userToken}`)
+        .send(seatNumber)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.data.should.have.property('id');
+          res.body.data.should.have.property('user_id');
+          res.body.data.should.have.property('trip_id');
+          res.body.data.should.have.property('bus_id');
+          res.body.data.should.have.property('trip_date');
+          res.body.data.should.have.property('created_on');
+          res.body.data.should.have.property('seat_number');
+          res.body.data.should.have.property('first_name');
+          res.body.data.should.have.property('last_name');
+          res.body.data.should.have.property('email');
+          res.body.data.should.have.property('message').eql('Seat changed successfully');
+          done();
+        });
+    });
+    it('it should change a seat', (done) => {
+      const seatNumber = {
+        seat_number: 20,
+      };
+      chai
+        .request(app)
+        .put(`/api/v1/bookings/${booking_id}`)
+        .set('Authorization', `Bearer ${userToken}`)
+        .send(seatNumber)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have.property('error').eql('Invalid seat number');
           done();
         });
     });
