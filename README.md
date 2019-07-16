@@ -1,7 +1,7 @@
 # wayfarer-api
 WayFarer is a public bus transportation booking server.
 
-[![Build Status](https://travis-ci.org/okabamac/wayfarer-api.svg?branch=develop)](https://travis-ci.org/okabamac/wayfarer-api) [![Coverage Status](https://coveralls.io/repos/github/okabamac/wayfarer-api/badge.svg?branch=develop)](https://coveralls.io/github/okabamac/wayfarer-api?branch=develop)
+[![Build Status](https://travis-ci.org/okabamac/wayfarer-api.svg?branch=develop)](https://travis-ci.org/okabamac/wayfarer-api) [![Maintainability](https://api.codeclimate.com/v1/badges/68a78280698c2c7ae3f0/maintainability)](https://codeclimate.com/github/okabamac/wayfarer-api/maintainability) [![Coverage Status](https://coveralls.io/repos/github/okabamac/wayfarer-api/badge.svg?branch=develop)](https://coveralls.io/github/okabamac/wayfarer-api?branch=develop)
 
 ## Table of Content
 
@@ -82,6 +82,7 @@ The test covers all the endpoints and requests sent to them.
 | GET       |   Get a booking                   | `/ap/v1/bookings/:booking_id`             |
 | DELETE       |   Delete a booking                   | `/ap/v1/bookings/:booking_id`             |
 | PATCH       |   Patch a trip                   | `/ap/v1/trips/:trip_id`             |
+| PUT       |   Change seat after booking                   | `/ap/v1/bookings/:booking_id`             |
 
 
 ## Author
