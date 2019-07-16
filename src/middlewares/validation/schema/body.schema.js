@@ -2,8 +2,7 @@ import Joi from '@hapi/joi';
 
 const date = Joi.date();
 
-const string = Joi.string()
-  .regex(/^\D+$/);
+const string = Joi.string().regex(/^\D+$/);
 
 const email = Joi.string()
   .email()
@@ -15,8 +14,10 @@ const password = Joi.string()
   .required()
   .strict();
 
-
-const id = Joi.number().integer().positive().min(1)
+const id = Joi.number()
+  .integer()
+  .positive()
+  .min(1)
   .required();
 
 const createUserSchema = Joi.object({
@@ -43,6 +44,7 @@ const createTripSchema = Joi.object({
     invalid: true,
   }),
 });
+
 const addBusSchema = Joi.object({
   number_plate: Joi.string()
     .error(new Error('number_plate is required and must be a string'))
@@ -67,6 +69,13 @@ const addBusSchema = Joi.object({
 const makeBookingSchema = Joi.object({
   trip_id: id.error(new Error('trip_id is required and must be an integer')),
 });
+const changeSeatSchema = Joi.object({
+  seat_number: Joi.number()
+    .integer()
+    .positive()
+    .min(2)
+    .required(),
+});
 
 export default {
   '/auth/signup': createUserSchema,
@@ -74,4 +83,5 @@ export default {
   '/trips': createTripSchema,
   '/buses': addBusSchema,
   '/bookings': makeBookingSchema,
+  '/bookings/:booking_id': changeSeatSchema,
 };

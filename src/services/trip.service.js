@@ -12,14 +12,13 @@ class TripService {
 
   static async addTrip(req) {
     try {
-      const bus = await Bus.findBusById(req.body.bus_id);
-      if (!bus) {
-        throw new Error('This bus does not exist');
-      }
+      const bus = await Bus.findBusByParam('bus_id', req.body.bus_id);
+
+      if (!bus[0]) throw new Error('This bus does not exist');
+
       const foundTrip = await Trip.findTripByMultipleParam(req.body);
-      if (foundTrip) {
-        throw new Error('This bus is already scheduled for the same trip');
-      }
+      if (foundTrip) throw new Error('This bus is already scheduled for the same trip');
+
       const newTrip = await Trip.createANewTrip(req.body, req.user_id);
       return newTrip;
     } catch (err) {
@@ -51,6 +50,8 @@ class TripService {
     try {
       const modifiedTrip = await Trip.modifyTheTrip(req);
       if (!modifiedTrip) throw new Error("This trip doesn't exist");
+
+      modifiedTrip.message = 'Trip cancelled successfully';
       return modifiedTrip;
     } catch (err) {
       throw err;
@@ -59,9 +60,11 @@ class TripService {
 
   static async getOneTrip(req) {
     try {
-      const modifiedTrip = await Trip.findTripById(req.params.trip_id);
-      if (!modifiedTrip) throw new Error("This trip doesn't exist");
-      return modifiedTrip;
+      const oneTrip = await Trip.findTripByParam('id', req.params.trip_id);
+
+      if (!oneTrip[0]) throw new Error("This trip doesn't exist");
+
+      return oneTrip;
     } catch (err) {
       throw err;
     }

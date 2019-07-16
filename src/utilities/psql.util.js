@@ -45,6 +45,54 @@ export default class Query {
   }
 
   /**
+                  * Find a specific document by multiple params
+                  * @param {param}
+                  */
+  async findByMultipleParam(
+    selector1,
+    selector2,
+    selector3,
+    selector4,
+    values,
+  ) {
+    const query = `SELECT * FROM ${
+      this.table
+    } WHERE ${selector1}=$1 AND ${selector2}=$2 AND ${selector3}=$3 AND ${selector4}=$4`;
+    try {
+      const response = await this.pool.query(
+        query,
+        values,
+      );
+      return response;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  /**
+                  * Find a specific document by Two params
+                  * @param {param}
+                  */
+  async findByTwoParam(
+    selector1,
+    selector2,
+    values,
+  ) {
+    const query = `SELECT * FROM ${
+      this.table
+    } WHERE ${selector1}=$1 AND ${selector2}=$2`;
+    try {
+      const response = await this.pool.query(
+        query,
+        values,
+      );
+      return response;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  /**
                   * Find and modify a document
                   * @param {param}
                   */
@@ -52,6 +100,25 @@ export default class Query {
     const query = `UPDATE ${
       this.table
     } SET status=$1 WHERE id=$2 RETURNING *`;
+    try {
+      const response = await this.pool.query(
+        query,
+        param,
+      );
+      return response;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  /**
+                  * Update seat
+                  * @param {param}
+                  */
+  async updateSeatNumber(param) {
+    const query = `UPDATE ${
+      this.table
+    } SET seat_number=$3 WHERE id=$1 AND user_id=$2 RETURNING *`;
     try {
       const response = await this.pool.query(
         query,
@@ -79,32 +146,6 @@ export default class Query {
       const response = await this.pool.query(
         query,
         param,
-      );
-      return response;
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  /**
-                  * Find a specific document by multiple params
-                  * @param {param}
-                  */
-
-  async findByMultipleParam(
-    selector1,
-    selector2,
-    selector3,
-    selector4,
-    values,
-  ) {
-    const query = `SELECT * FROM ${
-      this.table
-    } WHERE ${selector1}=$1 AND ${selector2}=$2 AND ${selector3}=$3 AND ${selector4}=$4`;
-    try {
-      const response = await this.pool.query(
-        query,
-        values,
       );
       return response;
     } catch (err) {

@@ -12,8 +12,8 @@ class Userservice {
 
   static async addUser(req) {
     try {
-      const foundUser = await User.findUserByEmail(req.body.email);
-      if (foundUser) {
+      const foundUser = await User.findUserByParam('email', req.body.email);
+      if (foundUser[0]) {
         throw new Error('Email is already in use');
       }
       const {
@@ -42,16 +42,16 @@ class Userservice {
 
   static async login(req) {
     try {
-      const foundUser = await User.findUserByEmail(req.body.email);
-      if (foundUser) {
+      const foundUser = await User.findUserByParam('email', req.body.email);
+      if (foundUser[0]) {
         const bycrptResponse = GeneralUtils.validate(
           req.body.password,
-          foundUser.password,
+          foundUser[0].password,
         );
         if (bycrptResponse) {
           const {
             user_id, first_name, last_name, is_admin, email,
-          } = foundUser;
+          } = foundUser[0];
           const token = await Auth.signJwt({
             user_id,
             is_admin,

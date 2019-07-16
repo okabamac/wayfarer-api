@@ -2,19 +2,10 @@
 import Query from '../utilities/psql.util';
 
 class User extends Query {
-  async findUserById(id_type, id) {
+  async findUserByParam(param_type, param) {
     try {
-      const { rows } = await this.findByOneParam(id_type, [id]);
-      return rows[0];
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  async findUserByEmail(email) {
-    try {
-      const { rows } = await this.findByOneParam('email', [email]);
-      return rows[0];
+      const { rows } = await this.findByOneParam(param_type, [param]);
+      return rows;
     } catch (err) {
       throw err;
     }
