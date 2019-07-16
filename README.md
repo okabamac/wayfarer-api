@@ -54,6 +54,7 @@ This application was deployed to the following:
 * Admin can cancel a trip
 * User can get and filter trips using trip destination
 * User can get and filter trip using trip origin
+* User can change seat after booking
 
 
 ## Testing
